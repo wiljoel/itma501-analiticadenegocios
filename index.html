@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>UAGM-ITMA501 · Business Analytics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:            #F4F8FC;
+    --bg-soft:       #E8F1F8;
+    --surface:       #FFFFFF;
+    --text:          #0A2540;
+    --text-muted:    #5B7A99;
+    --text-faint:    #8FA8C2;
+    --border:        #DCE7F2;
+    --accent-teal:   #14B8C4;
+    --accent-blue:   #2E6BB8;
+    --accent-mint:   #4ADE80;
+    --mint-bg:       #ECFDF5;
+    --mint-border:   #6FCF97;
+    --amber-bg:      #FFFBEB;
+    --amber-border:  #F59E0B;
+    --rose-bg:       #FEF2F2;
+    --rose-border:   #F87171;
+    --card-shadow:   0 1px 2px rgba(10,37,64,.04), 0 8px 24px rgba(10,37,64,.06);
+    --radius:        16px;
+    --radius-sm:     10px;
+    --grad-blue:     linear-gradient(160deg, #5BA3E8 0%, #2E6BB8 100%);
+    --grad-teal:     linear-gradient(160deg, #38D9D0 0%, #14A8B0 100%);
+    --grad-deep:     linear-gradient(160deg, #1E5BA8 0%, #0B3B7A 100%);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 96px; }
+  body {
+    margin: 0;
+    font-family: 'Inter', system-ui, -apple-system, Segoe UI, sans-serif;
+    color: var(--text); background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+  }
+  code, pre { font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace; }
+  a { color: var(--accent-blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Top bar */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(244,248,252,.85);
+    backdrop-filter: saturate(180%) blur(10px);
+    -webkit-backdrop-filter: saturate(180%) blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar-inner {
+    max-width: 1280px; margin: 0 auto;
+    padding: 14px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .brand {
+    font-size: 13px; font-weight: 700; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--text);
+  }
+  .brand .sage { color: var(--accent-teal); margin: 0 6px; }
+  .topbar nav { display: flex; gap: 22px; font-size: 14px; font-weight: 500; }
+  .topbar nav a { color: var(--text-muted); }
+  .topbar nav a:hover { color: var(--text); text-decoration: none; }
+  .topbar nav a.current { color: var(--text); }
+
+  /* Hero */
+  .hero {
+    padding: 80px 32px 56px;
+    background: linear-gradient(180deg, var(--bg-soft) 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-inner { max-width: 1080px; margin: 0 auto; }
+  .eyebrow {
+    display: inline-block;
+    font-size: 12px; font-weight: 700; letter-spacing: .18em;
+    color: var(--accent-teal); text-transform: uppercase;
+    border-bottom: 2px solid var(--accent-teal);
+    padding-bottom: 5px; margin-bottom: 22px;
+  }
+  h1.display {
+    font-size: clamp(36px, 4.4vw, 60px);
+    font-weight: 800; line-height: 1.08; letter-spacing: -.025em;
+    margin: 0 0 18px; max-width: 880px;
+  }
+  .lede {
+    font-size: clamp(17px, 1.3vw, 20px);
+    color: var(--text-muted); line-height: 1.55; max-width: 760px; margin: 0;
+  }
+  .meta-row {
+    margin-top: 36px;
+    display: flex; flex-wrap: wrap; gap: 22px;
+    font-size: 13px; color: var(--text-muted);
+  }
+  .meta-row .item { display: flex; align-items: center; gap: 8px; }
+  .meta-row .item strong { color: var(--text); font-weight: 600; }
+  .meta-row svg { width: 16px; height: 16px; stroke: var(--text-faint); stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Layout */
+  .layout {
+    max-width: 1280px; margin: 0 auto;
+    padding: 56px 32px 120px;
+    display: grid; grid-template-columns: 240px 1fr; gap: 64px;
+  }
+
+  /* TOC */
+  aside.toc {
+    position: sticky; align-self: start; top: 80px;
+    font-size: 13.5px;
+  }
+  .toc-title {
+    font-size: 11px; font-weight: 700; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--text-faint);
+    margin-bottom: 14px;
+  }
+  .toc ul { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--border); }
+  .toc li a {
+    display: block; padding: 7px 14px;
+    color: var(--text-muted); border-left: 2px solid transparent;
+    margin-left: -1px;
+  }
+  .toc li a:hover { color: var(--text); text-decoration: none; }
+  .toc li a.active { color: var(--accent-blue); border-left-color: var(--accent-blue); font-weight: 600; }
+
+  /* Article */
+  article { min-width: 0; max-width: 820px; }
+  article h2 {
+    font-size: clamp(26px, 2.4vw, 34px);
+    font-weight: 800; letter-spacing: -.02em; line-height: 1.2;
+    margin: 56px 0 14px;
+  }
+  article h2:first-child { margin-top: 0; }
+  article h3 {
+    font-size: 19px; font-weight: 700;
+    margin: 36px 0 10px;
+  }
+  article p { margin: 0 0 16px; font-size: 16.5px; color: #1E3A5F; }
+  article ul, article ol { padding-left: 22px; margin: 0 0 20px; }
+  article li { margin-bottom: 8px; }
+  article code:not(pre code) {
+    background: rgba(10,37,64,.06);
+    padding: 2px 6px; border-radius: 6px; font-size: .9em;
+  }
+
+  /* Concept cards */
+  .cards-3 {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 18px; margin: 28px 0 12px;
+  }
+  .card {
+    background: var(--surface); border-radius: var(--radius);
+    padding: 22px; box-shadow: var(--card-shadow);
+  }
+  .card .icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: grid; place-items: center; margin-bottom: 14px;
+    color: white;
+  }
+  .card .icon svg { width: 22px; height: 22px; stroke: white; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .icon-blue { background: var(--grad-blue); }
+  .icon-teal { background: var(--grad-teal); }
+  .icon-deep { background: var(--grad-deep); }
+  .card h4 { margin: 0 0 6px; font-size: 16px; font-weight: 700; }
+  .card p { margin: 0; font-size: 14.5px; color: var(--text-muted); line-height: 1.55; }
+
+  /* Lecture list */
+  .lectures { margin: 24px 0 8px; }
+  .lecture-row {
+    display: grid; grid-template-columns: 64px 1fr auto; gap: 18px;
+    align-items: center;
+    padding: 18px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    margin-bottom: 10px;
+    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  .lecture-row.is-available:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--card-shadow);
+    border-color: var(--accent-blue);
+  }
+  .lecture-row.is-pending { opacity: .6; }
+  .lec-num {
+    width: 48px; height: 48px; border-radius: 12px;
+    background: var(--bg-soft);
+    display: grid; place-items: center;
+    font-size: 14px; font-weight: 800; color: var(--accent-blue);
+    letter-spacing: .05em;
+  }
+  .lec-body h4 { margin: 0 0 4px; font-size: 16.5px; font-weight: 700; }
+  .lec-body p { margin: 0; font-size: 13.5px; color: var(--text-muted); }
+  .lec-cta {
+    font-size: 13px; font-weight: 600;
+    padding: 8px 14px; border-radius: 999px;
+    background: var(--bg-soft); color: var(--accent-blue);
+    display: inline-flex; align-items: center; gap: 6px;
+    white-space: nowrap;
+  }
+  .lecture-row.is-available .lec-cta { background: var(--accent-blue); color: white; }
+  .lecture-row.is-available .lec-cta:hover { background: var(--text); }
+  .lec-cta svg { width: 13px; height: 13px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Callouts */
+  .callout {
+    border-radius: var(--radius); padding: 18px 22px;
+    margin: 24px 0;
+    border-left: 4px solid;
+    background: var(--surface);
+  }
+  .callout .label {
+    font-size: 11px; font-weight: 700; letter-spacing: .15em;
+    text-transform: uppercase; margin-bottom: 6px;
+  }
+  .callout p { margin: 0; font-size: 15px; }
+  .callout.tip   { background: var(--mint-bg);  border-color: var(--mint-border); }
+  .callout.tip .label   { color: #047857; }
+  .callout.note  { background: var(--bg-soft);  border-color: var(--accent-blue); }
+  .callout.note .label  { color: var(--accent-blue); }
+  .callout.warn  { background: var(--amber-bg); border-color: var(--amber-border); }
+  .callout.warn .label  { color: #B45309; }
+  .callout.stop  { background: var(--rose-bg);  border-color: var(--rose-border); }
+  .callout.stop .label  { color: #B91C1C; }
+
+  /* Pull quote */
+  .pull {
+    margin: 36px 0; padding: 28px 32px;
+    border-left: 4px solid var(--accent-teal);
+    background: var(--surface); border-radius: var(--radius);
+  }
+  .pull blockquote {
+    margin: 0; font-size: 22px; font-weight: 600;
+    line-height: 1.35; letter-spacing: -.01em;
+  }
+  .pull cite {
+    display: block; margin-top: 14px;
+    font-style: normal; font-size: 13.5px; color: var(--text-muted);
+  }
+  .pull cite strong { color: var(--text); font-weight: 700; }
+
+  /* Table */
+  .table-wrap {
+    overflow-x: auto; margin: 24px 0;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface);
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  th, td { padding: 14px 18px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  thead th {
+    background: var(--bg-soft);
+    font-size: 12px; font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--text-muted);
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody td strong { color: var(--text); font-weight: 600; }
+  tfoot td {
+    background: var(--bg-soft);
+    font-weight: 700; color: var(--text);
+    border-top: 2px solid var(--border); border-bottom: none;
+  }
+
+  /* FAQ / Syllabus accordion */
+  .faq { margin: 24px 0; }
+  details {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); margin-bottom: 10px;
+    padding: 0 20px;
+  }
+  details[open] { box-shadow: var(--card-shadow); }
+  summary {
+    list-style: none; cursor: pointer;
+    padding: 16px 0;
+    font-weight: 600; font-size: 15.5px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after {
+    content: ''; width: 10px; height: 10px;
+    border-right: 2px solid var(--text-muted);
+    border-bottom: 2px solid var(--text-muted);
+    transform: rotate(45deg); transition: transform .2s ease;
+  }
+  details[open] summary::after { transform: rotate(-135deg); }
+  details > *:not(summary) { padding-bottom: 18px; color: var(--text-muted); font-size: 15px; }
+  details ul { padding-left: 22px; margin: 0; }
+  details li { margin-bottom: 4px; }
+  .unit-tag {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: var(--accent-teal); margin-right: 10px;
+  }
+
+  /* Next steps */
+  .next-steps {
+    margin-top: 56px; padding: 32px;
+    background: linear-gradient(160deg, var(--bg-soft) 0%, #D4E5F3 100%);
+    border-radius: var(--radius);
+  }
+  .next-steps h3 { margin: 0 0 6px; font-size: 20px; font-weight: 800; }
+  .next-steps p { margin: 0 0 18px; color: var(--text-muted); font-size: 15px; }
+  .pills { display: flex; gap: 10px; flex-wrap: wrap; }
+  .pill {
+    background: var(--surface); border-radius: 999px;
+    padding: 10px 18px; font-size: 14px; font-weight: 500;
+    color: var(--text); box-shadow: var(--card-shadow);
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .pill:hover { text-decoration: none; transform: translateY(-1px); transition: transform .15s ease; }
+  .pill svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 32px;
+    font-size: 13px; color: var(--text-faint); text-align: center;
+  }
+
+  @media (max-width: 960px) {
+    .layout { grid-template-columns: 1fr; gap: 32px; padding: 32px 24px 80px; }
+    aside.toc { position: static; }
+    .toc ul { display: flex; flex-wrap: wrap; border-left: none; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    .toc li a { border-left: none; border-bottom: 2px solid transparent; padding: 6px 12px; }
+    .toc li a.active { border-bottom-color: var(--accent-blue); border-left-color: transparent; }
+    .cards-3 { grid-template-columns: 1fr; }
+    .topbar nav { display: none; }
+    .lecture-row { grid-template-columns: 48px 1fr; }
+    .lec-cta { grid-column: 2; justify-self: start; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">UAGM-ITMA501 <span class="sage">·</span> Business Analytics</div>
+    <nav>
+      <a href="#about" class="current">About</a>
+      <a href="#lectures">Lectures</a>
+      <a href="#grading">Grading</a>
+      <a href="#syllabus">Syllabus</a>
+      <a href="#tools">Tools</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">UAGM · Fall 2026 · Graduate</span>
+    <h1 class="display">Business Analytics</h1>
+    <p class="lede">The working vocabulary, methods, and tools every graduate operator needs to turn raw data into decisions. Eight units, four evaluation components, one toolchain.</p>
+    <div class="meta-row">
+      <div class="item">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
+        <span>Instructor <strong>Wilson Díaz</strong></span>
+      </div>
+      <div class="item">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <span><strong>Fall 2026</strong></span>
+      </div>
+      <div class="item">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <span>Thursdays <strong>6:00 PM</strong></span>
+      </div>
+      <div class="item">
+        <svg viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+        <span>Modality <strong>In-person</strong></span>
+      </div>
+      <div class="item">
+        <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h16"/></svg>
+        <span>Course code <strong>ITMA-501</strong></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="layout">
+
+  <aside class="toc">
+    <div class="toc-title">On this page</div>
+    <ul>
+      <li><a href="#about" class="active">About the course</a></li>
+      <li><a href="#lectures">Lectures</a></li>
+      <li><a href="#grading">Grading</a></li>
+      <li><a href="#syllabus">Syllabus</a></li>
+      <li><a href="#tools">Tools &amp; lab</a></li>
+      <li><a href="#instructor">Instructor</a></li>
+    </ul>
+  </aside>
+
+  <article>
+
+    <section id="about">
+      <h2>About the course</h2>
+      <p><strong>Business Analytics (ITMA-501)</strong> covers the fundamental concepts of the emerging field of business data analytics. It promotes the applicable use of artificial intelligence models and software tools to develop the qualitative, quantitative, and managerial skills necessary to analyze complex data sets.</p>
+      <p>The course enables students to apply data-driven analytics to support strategic decision making in competitive and dynamic local and global markets, implementing Big Data knowledge across processes, products, services, and consumer profiles to improve organizational competitiveness and sustainability.</p>
+
+      <div class="cards-3">
+        <div class="card">
+          <div class="icon icon-blue">
+            <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-6"/></svg>
+          </div>
+          <h4>Methods</h4>
+          <p>Descriptive, diagnostic, predictive, and prescriptive analytics, grounded in real datasets.</p>
+        </div>
+        <div class="card">
+          <div class="icon icon-teal">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <h4>Tools</h4>
+          <p>Statistical software (SPSS, R, PSPP), Power BI, SQL, and modern ML libraries (scikit-learn, TensorFlow, PyTorch).</p>
+        </div>
+        <div class="card">
+          <div class="icon icon-deep">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>
+          </div>
+          <h4>Outcomes</h4>
+          <p>Make defensible, data-driven recommendations that hold up in a competitive business context.</p>
+        </div>
+      </div>
+
+      <div class="callout note">
+        <div class="label">Language</div>
+        <p>This course is delivered in Spanish; the official syllabus (units and sub-topics) is preserved verbatim in Spanish in the <a href="#syllabus">Syllabus</a> section below. Lecture material on this site is published in English by default.</p>
+      </div>
+    </section>
+
+    <section id="lectures">
+      <h2>Lectures</h2>
+      <p>Click any available lecture to open its slide deck. Lectures unlock as the term progresses.</p>
+
+      <div class="lectures">
+        <a class="lecture-row is-available" href="Lectures/UAGM-ITMA501-L01%20-%20Welcome%20and%20Syllabus%20Discussion%20-%20Slides.html">
+          <div class="lec-num">L01</div>
+          <div class="lec-body">
+            <h4>Welcome and Syllabus Discussion</h4>
+            <p>Course kickoff: expectations, syllabus walkthrough, grading structure, and toolchain.</p>
+          </div>
+          <span class="lec-cta">
+            Open slides
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </span>
+        </a>
+
+        <div class="lecture-row is-pending">
+          <div class="lec-num">L02</div>
+          <div class="lec-body">
+            <h4>To be scheduled</h4>
+            <p>Additional lectures will appear here as the syllabus is distributed across sessions.</p>
+          </div>
+          <span class="lec-cta">Coming soon</span>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <div class="label">Bring a laptop</div>
+        <p>Most sessions include hands-on work. Install the required software before <strong>L02</strong>. See <a href="#tools">Tools &amp; lab</a> for the list.</p>
+      </div>
+    </section>
+
+    <section id="grading">
+      <h2>Grading</h2>
+      <p>Four equally weighted components, totaling 100%. <em>Estudios de casos</em> is mandated by UAGM institutional policy and cannot be substituted.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>#</th><th>Componente</th><th>Weight</th><th>Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td><strong>Asignaciones</strong></td><td>25%</td><td>Applied exercises tied to each unit.</td></tr>
+            <tr><td>2</td><td><strong>Quizzes</strong></td><td>25%</td><td>Short, frequent checks on core concepts.</td></tr>
+            <tr><td>3</td><td><strong>Estudios de casos</strong></td><td>25%</td><td>Required by UAGM institutional policy.</td></tr>
+            <tr><td>4</td><td><strong>Examen Final</strong></td><td>25%</td><td>Cumulative, covering all eight units.</td></tr>
+          </tbody>
+          <tfoot>
+            <tr><td colspan="2">TOTAL</td><td>100%</td><td></td></tr>
+          </tfoot>
+        </table>
+      </div>
+    </section>
+
+    <section id="syllabus">
+      <h2>Syllabus</h2>
+      <p>Eight units, 45 sub-topics. Unit titles and sub-topic names are preserved verbatim from the official UAGM syllabus in Spanish. Numbering has been normalized for clarity (see lecture notes for the original numbering, where it differed).</p>
+
+      <div class="faq">
+        <details open>
+          <summary><span><span class="unit-tag">Unidad 1</span>Introducción a la analítica de negocios</span></summary>
+          <ul>
+            <li>1.1 Métodos y modelos analíticos (descriptivo, diagnóstico, predictivo y prescriptivo)</li>
+            <li>1.2 Big Data (volumen, velocidad, variedad y veracidad)</li>
+            <li>1.3 Datos estructurados, semi-estructurados y no estructurados</li>
+            <li>1.4 Analítica de negocios en la práctica (cadena de suministro, financiero, marketing, recursos humanos y Web)</li>
+          </ul>
+        </details>
+        <details>
+          <summary><span><span class="unit-tag">Unidad 2</span>Visualización de datos</span></summary>
+          <ul>
+            <li>2.1 Descripción general de la visualización de datos</li>
+            <li>2.2 Técnicas de diseño efectivos para la generación de visualizaciones</li>
+            <li>2.3 Principios de diseño de tablas, tabulación cruzada</li>
+            <li>2.4 Tablas dinámicas (Power BI y Excel)</li>
+            <li>2.5 Gráficos circulares, gráficos tridimensionales, gráficos de burbujas, mapas de calor</li>
+            <li>2.6 Otros gráficos adicionales para múltiples variables</li>
+            <li>2.7 Gráficos dinámicos</li>
+            <li>2.8 Indicador clave de desempeño (KPI)</li>
+          </ul>
+        </details>
+        <details>
+          <summary><span><span class="unit-tag">Unidad 3</span>Análisis de bases de datos relacionales y otras fuentes de datos</span></summary>
+          <ul>
+            <li>3.1 Importación de datos a través de un sistema de bases de datos relacional (SQL Server, Oracle Developer u otro)</li>
+            <li>3.2 Aplicación sentencias SELECT, FROM y WHERE</li>
+            <li>3.3 Funciones agregadas para la creación de consultas estructuradas</li>
+            <li>3.4 Álgebra relacional para la creación de consultas estructuradas</li>
+            <li>3.5 Exportación de datos a través de un sistema de bases de datos relacional</li>
+            <li>3.6 Creación de reportes de información (Reporting Services, Excel u otro) para la toma de decisiones</li>
+            <li>3.7 Transformación de bases de datos secundarias (Pew Research Center, World Values Survey, Kaggle, u otras)</li>
+            <li>3.8 Elaboración de encuestas, QR Code y exportación de datos a través de Microsoft Forms</li>
+          </ul>
+        </details>
+        <details>
+          <summary><span><span class="unit-tag">Unidad 4</span>Minería de datos descriptivos</span></summary>
+          <ul>
+            <li>4.1 Análisis de conglomerados</li>
+            <li>4.2 Distancia entre observaciones</li>
+            <li>4.3 Agrupamiento de k-medias y agrupamiento jerárquico</li>
+            <li>4.4 Medición de la disimilitud entre conglomerados</li>
+            <li>4.5 Reglas de asociación (evaluación de las reglas de asociación)</li>
+            <li>4.6 Minería de texto</li>
+            <li>4.7 Preprocesamiento de datos de texto para análisis</li>
+            <li>4.8 Disimilitud entre documentos y nubes de palabras</li>
+          </ul>
+        </details>
+        <details>
+          <summary><span><span class="unit-tag">Unidad 5</span>Introducción a la inteligencia artificial</span></summary>
+          <ul>
+            <li>5.1 Definición de la inteligencia artificial</li>
+            <li>5.2 Tipos de inteligencia artificial</li>
+            <li>5.3 Aplicaciones y casos de uso actuales</li>
+            <li>5.4 Ética y consideraciones sociales</li>
+          </ul>
+        </details>
+        <details>
+          <summary><span><span class="unit-tag">Unidad 6</span>Aprendizaje Automático (Machine Learning)</span></summary>
+          <ul>
+            <li>6.1 Aprendizaje supervisado</li>
+            <li>6.2 Máquinas de soporte vectorial (SVM)</li>
+            <li>6.3 Redes neuronales y aprendizaje profundo (Deep Learning)</li>
+            <li>6.4 Métodos random forests y boosting</li>
+          </ul>
+        </details>
+        <details>
+          <summary><span><span class="unit-tag">Unidad 7</span>Aprendizaje no supervisado</span></summary>
+          <ul>
+            <li>7.1 Clustering (k-means y jerárquico)</li>
+            <li>7.2 Reducción de dimensionalidad (PCA, t-SNE)</li>
+            <li>7.3 Aprendizaje por refuerzo</li>
+            <li>7.4 Algoritmos básicos (Q-learning, SARSA)</li>
+            <li>7.5 Políticas y valoraciones</li>
+          </ul>
+        </details>
+        <details>
+          <summary><span><span class="unit-tag">Unidad 8</span>Desarrollo y herramientas</span></summary>
+          <ul>
+            <li>8.1 Entorno de aplicación de algoritmos de análisis (Rapid Miner)</li>
+            <li>8.2 Entornos de desarrollo (Jupyter, Colab)</li>
+            <li>8.3 Bibliotecas y frameworks (TensorFlow, PyTorch, scikit-learn)</li>
+            <li>8.4 Implementación y optimización de modelos</li>
+          </ul>
+        </details>
+      </div>
+    </section>
+
+    <section id="tools">
+      <h2>Tools &amp; lab</h2>
+      <p>This course is lab-required. You will need software for two distinct phases of the term.</p>
+
+      <h3>Statistical analysis (Units 1 to 4)</h3>
+      <ul>
+        <li><strong>SPSS, PSPP, R, or MegaStat</strong> — at least one. Free options (PSPP, R) are sufficient for every assignment.</li>
+        <li><strong>Power BI Desktop</strong> and <strong>Microsoft Excel</strong> for visualization and pivot work.</li>
+        <li>A SQL environment (SQL Server Express, SQLite, or DB Browser for SQLite) for Unit 3.</li>
+      </ul>
+
+      <h3>Machine learning (Units 5 to 8)</h3>
+      <ul>
+        <li>Python 3.11+ with <code>scikit-learn</code>, <code>pandas</code>, <code>numpy</code>, <code>matplotlib</code>.</li>
+        <li>Jupyter Notebook or Google Colab (Colab is recommended; no local setup required).</li>
+        <li>Optional: TensorFlow or PyTorch for deep-learning exercises.</li>
+        <li>RapidMiner Studio (free educational license) for Unit 8.</li>
+      </ul>
+
+      <div class="callout warn">
+        <div class="label">Install before L02</div>
+        <p>Bring your laptop to every session, with at least one statistical tool and Python (or a working Colab account) installed and verified. We will reconcile the toolchain in L01 and lock the list before L02.</p>
+      </div>
+    </section>
+
+    <section id="instructor">
+      <h2>Instructor</h2>
+      <p><strong>Wilson Díaz</strong> teaches this course at UAGM. Office hours, contact info, and policy questions are covered in L01 and posted on the LMS.</p>
+
+      <div class="pull">
+        <blockquote>"Analytics is not about the tool. It is about a defensible decision you can explain to someone who pays for the consequences."</blockquote>
+        <cite><strong>Course principle</strong>, UAGM-ITMA501</cite>
+      </div>
+    </section>
+
+    <div class="next-steps">
+      <h3>Before the next session</h3>
+      <p>Three things to do this week.</p>
+      <div class="pills">
+        <a class="pill" href="Lectures/UAGM-ITMA501-L01%20-%20Welcome%20and%20Syllabus%20Discussion%20-%20Slides.html">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          Review L01 slides
+        </a>
+        <a class="pill" href="#tools">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12l2 2 4-4"/></svg>
+          Install required tools
+        </a>
+        <a class="pill" href="#syllabus">
+          <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h16"/></svg>
+          Skim the syllabus
+        </a>
+      </div>
+    </div>
+
+  </article>
+</div>
+
+<footer>
+  UAGM-ITMA501 · Business Analytics · Fall 2026 · Built with Saria <code>mockup-02-longform</code>
+</footer>
+
+</body>
+</html>
