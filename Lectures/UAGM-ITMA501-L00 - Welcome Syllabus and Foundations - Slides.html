@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>UAGM-ITMA501 · Lecture 01 · Welcome, Syllabus and Foundations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:            #E8F1F8;
+    --bg-soft:       #DCE9F4;
+    --text:          #0A2540;
+    --text-muted:    #5B7A99;
+    --accent-teal:   #14B8C4;
+    --accent-blue:   #2E6BB8;
+    --accent-mint:   #4ADE80;
+    --mint-bg:       #ECFDF5;
+    --mint-border:   #6FCF97;
+    --amber-bg:      #FFFBEB;
+    --amber-border:  #F59E0B;
+    --card:          #FFFFFF;
+    --card-shadow:   0 1px 2px rgba(10,37,64,.04), 0 8px 24px rgba(10,37,64,.06);
+    --radius:        20px;
+    --radius-sm:     14px;
+    --grad-blue:     linear-gradient(160deg, #5BA3E8 0%, #2E6BB8 100%);
+    --grad-teal:     linear-gradient(160deg, #38D9D0 0%, #14A8B0 100%);
+    --grad-deep:     linear-gradient(160deg, #1E5BA8 0%, #0B3B7A 100%);
+    --grad-mint:     linear-gradient(160deg, #6EE7B7 0%, #10B981 100%);
+    --grad-amber:    linear-gradient(160deg, #FBBF24 0%, #D97706 100%);
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    font-family: 'Inter', system-ui, -apple-system, Segoe UI, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+  code, pre { font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace; }
+
+  /* Slide stage */
+  .deck { position: relative; height: 100vh; width: 100vw; }
+  .slide {
+    position: absolute; inset: 0;
+    display: none;
+    padding: 72px 88px 110px;
+    overflow: auto;
+  }
+  .slide.active { display: block; }
+  .slide-inner {
+    max-width: 1200px; margin: 0 auto;
+    min-height: 100%; display: flex; flex-direction: column; justify-content: center;
+  }
+
+  /* Typography */
+  .eyebrow {
+    display: inline-block;
+    font-size: 13px; font-weight: 700; letter-spacing: .18em;
+    color: var(--accent-teal); text-transform: uppercase;
+    border-bottom: 2px solid var(--accent-teal);
+    padding-bottom: 6px; margin-bottom: 24px;
+  }
+  h1.display {
+    font-size: clamp(40px, 5.2vw, 72px);
+    font-weight: 800; line-height: 1.05; letter-spacing: -.025em;
+    margin: 0 0 20px;
+  }
+  h2.section {
+    font-size: clamp(30px, 3.4vw, 48px);
+    font-weight: 800; line-height: 1.1; letter-spacing: -.02em;
+    margin: 0 0 16px;
+  }
+  .lede {
+    font-size: clamp(17px, 1.35vw, 20px);
+    color: var(--text-muted); line-height: 1.55;
+    max-width: 820px; margin: 0 auto;
+  }
+  .center { text-align: center; }
+
+  /* Title slide */
+  .title-slide .kicker { color: var(--text-muted); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; font-size: 14px; margin-bottom: 22px; }
+  .title-slide .meta { margin-top: 44px; color: var(--text-muted); font-size: 15px; }
+  .title-slide .meta strong { color: var(--text); font-weight: 600; }
+  .title-slide .meta-row { display: flex; gap: 40px; flex-wrap: wrap; justify-content: center; }
+
+  /* Grids */
+  .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; margin-top: 48px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 48px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; margin-top: 40px; }
+
+  /* Stat row */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-top: 48px; }
+  .stat { text-align: center; }
+  .stat .num {
+    font-size: clamp(56px, 6vw, 88px);
+    font-weight: 800; line-height: 1; letter-spacing: -.03em;
+    background: var(--grad-deep);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+  }
+  .stat .label {
+    margin-top: 10px; font-size: 14px; font-weight: 600;
+    color: var(--text-muted); letter-spacing: .04em; text-transform: uppercase;
+  }
+
+  /* Callouts */
+  .callout-inline {
+    margin-top: 36px; padding: 18px 24px;
+    border-radius: 14px;
+    background: var(--mint-bg);
+    border-left: 4px solid var(--mint-border);
+    font-size: 16px; color: var(--text);
+    text-align: left;
+  }
+  .callout-inline strong { color: #047857; }
+  .callout-amber {
+    background: var(--amber-bg);
+    border-left-color: var(--amber-border);
+  }
+  .callout-amber strong { color: #B45309; }
+
+  /* Step card */
+  .step { text-align: center; }
+  .squircle {
+    width: 116px; height: 116px;
+    border-radius: 28px;
+    margin: 0 auto 16px;
+    display: grid; place-items: center;
+    color: white;
+    box-shadow: 0 12px 28px rgba(10,37,64,.18);
+    position: relative;
+  }
+  .squircle svg { width: 46px; height: 46px; stroke: white; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .squircle .step-num {
+    position: absolute; bottom: 14px; left: 0; right: 0;
+    font-size: 10px; font-weight: 700; letter-spacing: .15em; opacity: .9;
+  }
+  .sq-1 { background: var(--grad-blue); }
+  .sq-2 { background: var(--grad-teal); }
+  .sq-3 { background: linear-gradient(160deg, #7BC9F0 0%, #4A9FD8 100%); }
+  .sq-4 { background: var(--grad-mint); }
+  .sq-5 { background: var(--grad-deep); }
+  .sq-6 { background: var(--grad-amber); }
+  .step h4 { margin: 0 0 6px; font-size: 18px; font-weight: 700; }
+  .step p { margin: 0; color: var(--text-muted); font-size: 14px; line-height: 1.5; max-width: 200px; margin-inline: auto; }
+
+  /* Grading */
+  .grade-card { text-align: center; padding: 8px; }
+  .grade-card .pct {
+    font-size: clamp(48px, 5vw, 72px);
+    font-weight: 800; line-height: 1; letter-spacing: -.025em;
+    color: var(--accent-blue);
+  }
+  .grade-card .name { margin-top: 8px; font-size: 18px; font-weight: 700; }
+  .grade-card .note { margin-top: 4px; font-size: 13px; color: var(--text-muted); }
+  .grade-card.required .pct { color: var(--accent-teal); }
+  .grade-card.required .ribbon {
+    display: inline-block; margin-top: 4px;
+    font-size: 11px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase;
+    color: #047857; background: var(--mint-bg);
+    padding: 3px 10px; border-radius: 999px;
+  }
+
+  /* 7-layer stack */
+  .stack {
+    display: flex; flex-direction: column; gap: 8px;
+    margin-top: 36px; max-width: 820px; margin-inline: auto;
+  }
+  .layer {
+    display: grid; grid-template-columns: 44px 1fr 120px 80px;
+    align-items: center; gap: 16px;
+    padding: 14px 20px; border-radius: 14px;
+    background: var(--card); box-shadow: var(--card-shadow);
+    border-left: 6px solid var(--accent-blue);
+  }
+  .layer .idx {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--bg-soft); color: var(--text);
+    font-weight: 800; font-size: 14px;
+    display: grid; place-items: center;
+  }
+  .layer .lname { font-weight: 700; font-size: 17px; }
+  .layer .meta { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+  .layer .lect { font-size: 12px; color: var(--text-muted); font-weight: 600; text-align: right; letter-spacing: .05em; }
+  .layer.assess { border-left-color: var(--accent-teal); background: var(--mint-bg); }
+
+  /* Tool cards */
+  .tool-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 32px; }
+  .tool-card {
+    background: var(--card); border-radius: 14px;
+    padding: 20px 18px; box-shadow: var(--card-shadow);
+    text-align: left;
+  }
+  .tool-card .tname {
+    font-size: 16px; font-weight: 700; margin-bottom: 6px;
+  }
+  .tool-card .role {
+    font-size: 13px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4;
+  }
+  .tool-card .used {
+    font-size: 11px; font-weight: 700; letter-spacing: .1em;
+    color: var(--accent-blue); text-transform: uppercase;
+  }
+
+  /* Ladder */
+  .ladder {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 40px;
+  }
+  .rung {
+    background: var(--card); border-radius: var(--radius-sm);
+    padding: 22px 20px; box-shadow: var(--card-shadow);
+    text-align: left; position: relative;
+  }
+  .rung .rnum {
+    display: inline-block;
+    background: var(--grad-blue); color: white;
+    width: 32px; height: 32px; border-radius: 10px;
+    font-weight: 800; font-size: 14px;
+    display: grid; place-items: center;
+    margin-bottom: 12px;
+  }
+  .rung.r2 .rnum { background: var(--grad-teal); }
+  .rung.r3 .rnum { background: var(--grad-deep); }
+  .rung.r4 .rnum { background: var(--grad-mint); }
+  .rung h4 { margin: 0 0 6px; font-size: 18px; font-weight: 700; }
+  .rung .q { font-size: 14px; font-weight: 600; color: var(--text-muted); margin-bottom: 10px; }
+  .rung .ex { font-size: 14px; line-height: 1.5; }
+
+  /* Data shape cards */
+  .shape-card {
+    background: var(--card); border-radius: var(--radius-sm);
+    padding: 22px 24px; box-shadow: var(--card-shadow);
+    text-align: left;
+  }
+  .shape-card .tag {
+    font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--accent-blue); margin-bottom: 10px;
+  }
+  .shape-card h4 { margin: 0 0 10px; font-size: 20px; font-weight: 700; }
+  .shape-card .ex { font-size: 14px; color: var(--text-muted); margin-bottom: 10px; }
+  .shape-card code { background: rgba(10,37,64,.06); padding: 2px 6px; border-radius: 6px; font-size: 13px; }
+
+  /* Install checklist */
+  .checklist {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 14px; margin-top: 36px;
+  }
+  .check {
+    background: var(--card); border-radius: 14px;
+    padding: 18px 14px; box-shadow: var(--card-shadow);
+    text-align: center;
+  }
+  .check .icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: grid; place-items: center; margin: 0 auto 10px;
+    background: var(--grad-blue); color: white;
+  }
+  .check .icon svg { width: 22px; height: 22px; stroke: white; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .check .tname { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+  .check .note { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+
+  /* Closing */
+  .closing-slide .squircle { width: 96px; height: 96px; border-radius: 24px; margin-bottom: 28px; }
+  .closing-slide .squircle svg { width: 40px; height: 40px; }
+  .links { display: flex; gap: 12px; justify-content: center; margin-top: 32px; flex-wrap: wrap; }
+  .pill {
+    background: var(--card); border-radius: 999px;
+    padding: 10px 20px; font-size: 14px; font-weight: 500;
+    color: var(--text); box-shadow: var(--card-shadow);
+    text-decoration: none;
+  }
+
+  /* Quote */
+  .quote-slide blockquote {
+    margin: 0; padding: 0;
+    font-size: clamp(28px, 2.6vw, 40px);
+    font-weight: 600; line-height: 1.25; letter-spacing: -.015em;
+    max-width: 900px;
+  }
+  .quote-slide cite {
+    display: block; margin-top: 24px; font-style: normal;
+    color: var(--text-muted); font-size: 15px; font-weight: 500;
+  }
+  .quote-slide cite strong { color: var(--text); font-weight: 700; }
+
+  /* Navigation chrome */
+  .chrome {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    padding: 16px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(to top, var(--bg) 60%, transparent);
+    pointer-events: none;
+  }
+  .chrome > * { pointer-events: auto; }
+  .nav-btn {
+    width: 42px; height: 42px; border-radius: 50%;
+    border: none; cursor: pointer;
+    background: var(--card); color: var(--text);
+    box-shadow: var(--card-shadow);
+    display: grid; place-items: center;
+    transition: transform .15s ease, opacity .15s ease;
+  }
+  .nav-btn:hover { transform: translateY(-1px); }
+  .nav-btn:disabled { opacity: .35; cursor: default; }
+  .nav-btn svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .pager { display: flex; gap: 7px; }
+  .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(10,37,64,.18);
+    cursor: pointer; border: none; padding: 0;
+    transition: background .15s ease, transform .15s ease;
+  }
+  .dot.active { background: var(--accent-teal); transform: scale(1.3); }
+  .counter { font-size: 13px; color: var(--text-muted); font-weight: 500; letter-spacing: .05em; }
+
+  .brand {
+    position: fixed; top: 20px; right: 26px;
+    font-size: 12px; font-weight: 600; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--text-muted);
+  }
+  .brand .sage { color: var(--accent-teal); }
+
+  @media (max-width: 900px) {
+    .slide { padding: 48px 20px 96px; }
+    .grid-5, .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .layer { grid-template-columns: 36px 1fr; }
+    .layer .meta, .layer .lect { display: none; }
+    .tool-grid, .checklist, .ladder { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media print {
+    body { overflow: visible; background: white; }
+    .deck { height: auto; }
+    .slide { display: block; position: relative; page-break-after: always; height: 100vh; }
+    .chrome, .brand { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="brand">UAGM-ITMA501 <span class="sage">·</span> Lecture 01</div>
+
+<div class="deck" id="deck">
+
+  <!-- Slide 1: Title -->
+  <section class="slide active title-slide" data-title="Title">
+    <div class="slide-inner center">
+      <div class="kicker">Business Analytics · Fall 2026</div>
+      <h1 class="display">Welcome, Syllabus &amp; Foundations</h1>
+      <p class="lede">The course arc, the toolchain, and the vocabulary of business analytics. In one session.</p>
+      <div class="meta">
+        <div class="meta-row">
+          <div><strong>Course</strong>&nbsp; UAGM-ITMA501</div>
+          <div><strong>Session</strong>&nbsp; 01 of 08</div>
+          <div><strong>Duration</strong>&nbsp; 4.5 hours</div>
+          <div><strong>Modality</strong>&nbsp; In-person</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 2: Agenda -->
+  <section class="slide" data-title="Agenda">
+    <div class="slide-inner center">
+      <span class="eyebrow">Today's session</span>
+      <h2 class="section">Five blocks, one arc.</h2>
+      <p class="lede">Two concept blocks, a break, two lab blocks, and a wrap. Every session this term follows the same rhythm.</p>
+
+      <div class="grid-5">
+        <div class="step">
+          <div class="squircle sq-1">
+            <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+            <span class="step-num">BLOCK 01</span>
+          </div>
+          <h4>Welcome &amp; Syllabus</h4>
+          <p>45 min. Arc, grading, tools, policy.</p>
+        </div>
+        <div class="step">
+          <div class="squircle sq-2">
+            <svg viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>
+            <span class="step-num">BLOCK 02</span>
+          </div>
+          <h4>Foundations</h4>
+          <p>75 min. Ladder, 4 V's, shapes, domains.</p>
+        </div>
+        <div class="step">
+          <div class="squircle sq-4">
+            <svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/></svg>
+            <span class="step-num">BLOCK 03</span>
+          </div>
+          <h4>Install Checklist</h4>
+          <p>60 min. Five tools, verified together.</p>
+        </div>
+        <div class="step">
+          <div class="squircle sq-3">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 10h8M8 14h5"/></svg>
+            <span class="step-num">BLOCK 04</span>
+          </div>
+          <h4>Classification Lab</h4>
+          <p>45 min. Four datasets, three frameworks.</p>
+        </div>
+        <div class="step">
+          <div class="squircle sq-5">
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            <span class="step-num">BLOCK 05</span>
+          </div>
+          <h4>Wrap</h4>
+          <p>30 min. Homework and next week.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 3: Course architecture (7 layers) -->
+  <section class="slide" data-title="Architecture">
+    <div class="slide-inner">
+      <div class="center">
+        <span class="eyebrow">Part 01 · Course arc</span>
+        <h2 class="section">Seven layers. Eight sessions. One build.</h2>
+        <p class="lede">Every lecture is a LEGO block. It snaps onto what came before and passes something to what comes next. You will not just learn techniques; you will assemble a working stack.</p>
+      </div>
+
+      <div class="stack">
+        <div class="layer"><div class="idx">0</div><div><div class="lname">Onboarding</div><div class="meta">Baseplate</div></div><div class="meta">Setup &amp; policy</div><div class="lect">L01</div></div>
+        <div class="layer"><div class="idx">1</div><div><div class="lname">Foundations</div><div class="meta">Bricks</div></div><div class="meta">Unit 1</div><div class="lect">L01</div></div>
+        <div class="layer"><div class="idx">2</div><div><div class="lname">Data Plumbing</div><div class="meta">Wiring &amp; pipes</div></div><div class="meta">Unit 3</div><div class="lect">L02 · L03</div></div>
+        <div class="layer"><div class="idx">3</div><div><div class="lname">Description</div><div class="meta">Walls &amp; windows</div></div><div class="meta">Unit 2</div><div class="lect">L03 · L04</div></div>
+        <div class="layer"><div class="idx">4</div><div><div class="lname">Discovery</div><div class="meta">Interior design</div></div><div class="meta">Unit 4</div><div class="lect">L04 · L05</div></div>
+        <div class="layer"><div class="idx">5</div><div><div class="lname">AI Framing</div><div class="meta">Blueprints</div></div><div class="meta">Unit 5</div><div class="lect">L05</div></div>
+        <div class="layer"><div class="idx">6</div><div><div class="lname">Prediction</div><div class="meta">Structural steel</div></div><div class="meta">Units 6 &amp; 7</div><div class="lect">L06 · L07</div></div>
+        <div class="layer"><div class="idx">7</div><div><div class="lname">Delivery</div><div class="meta">Roof &amp; keys</div></div><div class="meta">Unit 8</div><div class="lect">L07</div></div>
+        <div class="layer assess"><div class="idx">🏁</div><div><div class="lname">Assessment</div><div class="meta">Move-in inspection</div></div><div class="meta">Final Exam</div><div class="lect">L08</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 4: Grading -->
+  <section class="slide" data-title="Grading">
+    <div class="slide-inner center">
+      <span class="eyebrow">Part 02 · How you'll be graded</span>
+      <h2 class="section">Four components. Equal weight.</h2>
+      <p class="lede">Everything you do this term rolls up into one of these four buckets.</p>
+
+      <div class="grid-4">
+        <div class="grade-card">
+          <div class="pct">25%</div>
+          <div class="name">Asignaciones</div>
+          <div class="note">Take-home work tied to each unit.</div>
+        </div>
+        <div class="grade-card">
+          <div class="pct">25%</div>
+          <div class="name">Quizzes</div>
+          <div class="note">Two in-class checks (L04, L07).</div>
+        </div>
+        <div class="grade-card required">
+          <div class="pct">25%</div>
+          <div class="name">Estudios de casos</div>
+          <div class="ribbon">UAGM Required</div>
+        </div>
+        <div class="grade-card">
+          <div class="pct">25%</div>
+          <div class="name">Examen Final</div>
+          <div class="note">Cumulative, L08.</div>
+        </div>
+      </div>
+
+      <div class="callout-inline">
+        <strong>Assessment map:</strong> 3 case studies land at L03, L05, and L07. 2 quizzes at L04 and L07. Final Exam and Final Deliverable at L08. Case studies are UAGM-required and cannot be substituted.
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 5: Toolchain -->
+  <section class="slide" data-title="Toolchain">
+    <div class="slide-inner">
+      <div class="center">
+        <span class="eyebrow">Part 03 · What you'll use</span>
+        <h2 class="section">Seven tools. Each with a job.</h2>
+        <p class="lede">Office tools for reporting, one database, one no-code ML lab, and code-first ML for the second half of the course.</p>
+      </div>
+
+      <div class="tool-grid">
+        <div class="tool-card"><div class="tname">Excel</div><div class="role">Spreadsheet, pivots, baseline analytics.</div><div class="used">L01 · L03</div></div>
+        <div class="tool-card"><div class="tname">Supabase</div><div class="role">Managed Postgres. SQL editor, auth, storage.</div><div class="used">L02 · L03 · L06 · L07</div></div>
+        <div class="tool-card"><div class="tname">Power BI</div><div class="role">Reports and dashboards. Reads Supabase directly.</div><div class="used">L02 · L03 · L04 · L07</div></div>
+        <div class="tool-card"><div class="tname">RapidMiner</div><div class="role">No-code ML lab. Visual operators.</div><div class="used">L04 · L05</div></div>
+        <div class="tool-card"><div class="tname">Google Colab</div><div class="role">Hosted Python notebooks with free GPU.</div><div class="used">L06 · L07</div></div>
+        <div class="tool-card"><div class="tname">scikit-learn</div><div class="role">Classical machine learning in Python.</div><div class="used">L06 · L07</div></div>
+        <div class="tool-card"><div class="tname">PyTorch</div><div class="role">Deep learning framework for neural networks.</div><div class="used">L06</div></div>
+        <div class="tool-card"><div class="tname">MS Forms</div><div class="role">Surveys and instrumentation.</div><div class="used">L03</div></div>
+      </div>
+
+      <div class="callout-inline callout-amber">
+        <strong>Install everything today.</strong> Block 03 is a hands-on install checklist. If a tool is not on your laptop by the end of this session, Block 03 of L02 will not work for you.
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 6: Analytical Ladder (U1.1) -->
+  <section class="slide" data-title="The Ladder">
+    <div class="slide-inner">
+      <div class="center">
+        <span class="eyebrow">Foundations · U1.1</span>
+        <h2 class="section">The analytical ladder.</h2>
+        <p class="lede">Four rungs. Every rung requires the ones below it. Every technique you learn this term lives on one of them.</p>
+      </div>
+
+      <div class="ladder">
+        <div class="rung">
+          <div class="rnum">1</div>
+          <h4>Descriptive</h4>
+          <div class="q">What happened?</div>
+          <div class="ex">Dashboards, reports, KPIs. "Q2 revenue was $2.1M." Covered in L03, L04.</div>
+        </div>
+        <div class="rung r2">
+          <div class="rnum">2</div>
+          <h4>Diagnostic</h4>
+          <div class="q">Why did it happen?</div>
+          <div class="ex">Root cause, drill-down. "Revenue dropped because Miami churn spiked." Woven through Description.</div>
+        </div>
+        <div class="rung r3">
+          <div class="rnum">3</div>
+          <h4>Predictive</h4>
+          <div class="q">What will happen?</div>
+          <div class="ex">Forecasts, machine learning. "These 200 customers are likely to churn." Covered in L06, L07.</div>
+        </div>
+        <div class="rung r4">
+          <div class="rnum">4</div>
+          <h4>Prescriptive</h4>
+          <div class="q">What should we do?</div>
+          <div class="ex">Optimization, recommendation, deployment. "Send this offer to those customers now." L07.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 7: The 4 V's (U1.2) -->
+  <section class="slide" data-title="4 V's">
+    <div class="slide-inner center">
+      <span class="eyebrow">Foundations · U1.2</span>
+      <h2 class="section">The four V's of Big Data.</h2>
+      <p class="lede">Every dataset in this course, and every dataset you'll ever meet at work, can be sized up against these four dimensions.</p>
+
+      <div class="stats">
+        <div class="stat"><div class="num">V₁</div><div class="label">Volume</div></div>
+        <div class="stat"><div class="num">V₂</div><div class="label">Velocity</div></div>
+        <div class="stat"><div class="num">V₃</div><div class="label">Variety</div></div>
+        <div class="stat"><div class="num">V₄</div><div class="label">Veracity</div></div>
+      </div>
+
+      <div class="grid-4" style="margin-top: 32px;">
+        <div class="shape-card"><div class="tag">Volume</div><div class="ex">How much? Kilobytes to petabytes. A retail POS system may push 50 GB per day.</div></div>
+        <div class="shape-card"><div class="tag">Velocity</div><div class="ex">How fast? Batch monthly to streaming per second. IoT sensors run milliseconds apart.</div></div>
+        <div class="shape-card"><div class="tag">Variety</div><div class="ex">What shape? Numbers, text, images, audio, JSON logs. All in one pipeline.</div></div>
+        <div class="shape-card"><div class="tag">Veracity</div><div class="ex">How trustworthy? Data ages. Systems mislabel. Rows go missing. Assume nothing.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 8: Data shapes (U1.3) -->
+  <section class="slide" data-title="Data Shapes">
+    <div class="slide-inner">
+      <div class="center">
+        <span class="eyebrow">Foundations · U1.3</span>
+        <h2 class="section">Three shapes of data.</h2>
+        <p class="lede">The shape decides the tool. Get the shape wrong and you'll pick the wrong tool every time.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="shape-card">
+          <div class="tag">Shape 01</div>
+          <h4>Structured</h4>
+          <div class="ex">Rows and columns. Fixed schema. Reads great in SQL.</div>
+          <div>Example: <code>orders</code> table in a retail database. Every row has the same fields.</div>
+        </div>
+        <div class="shape-card">
+          <div class="tag">Shape 02</div>
+          <h4>Semi-structured</h4>
+          <div class="ex">Nested fields, optional keys. JSON, XML, log files.</div>
+          <div>Example: <code>events.jsonl</code> from a website. Every event has different properties.</div>
+        </div>
+        <div class="shape-card">
+          <div class="tag">Shape 03</div>
+          <h4>Unstructured</h4>
+          <div class="ex">Free text, images, audio, video. No schema at all.</div>
+          <div>Example: customer reviews. We'll mine 200 of these in L05.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 9: Domain tours (U1.4) -->
+  <section class="slide" data-title="Domains">
+    <div class="slide-inner center">
+      <span class="eyebrow">Foundations · U1.4</span>
+      <h2 class="section">Analytics in the wild.</h2>
+      <p class="lede">Five domains where analytics is not optional. Think about which one touches your workplace.</p>
+
+      <div class="grid-5">
+        <div class="step">
+          <div class="squircle sq-1"><svg viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h18"/></svg><span class="step-num">DOMAIN 01</span></div>
+          <h4>Supply chain</h4>
+          <p>Demand forecasting, inventory optimization.</p>
+        </div>
+        <div class="step">
+          <div class="squircle sq-2"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg><span class="step-num">DOMAIN 02</span></div>
+          <h4>Finance</h4>
+          <p>Fraud detection, credit scoring, risk.</p>
+        </div>
+        <div class="step">
+          <div class="squircle sq-4"><svg viewBox="0 0 24 24"><path d="M4 4h16v6H4zM4 14h16v6H4z"/></svg><span class="step-num">DOMAIN 03</span></div>
+          <h4>Marketing</h4>
+          <p>Segmentation, campaign attribution.</p>
+        </div>
+        <div class="step">
+          <div class="squircle sq-3"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2M17 3.13a4 4 0 010 7.75M21 21v-2a4 4 0 00-3-3.87"/><circle cx="9" cy="7" r="4"/></svg><span class="step-num">DOMAIN 04</span></div>
+          <h4>HR</h4>
+          <p>Attrition prediction, workforce planning.</p>
+        </div>
+        <div class="step">
+          <div class="squircle sq-5"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg><span class="step-num">DOMAIN 05</span></div>
+          <h4>Web</h4>
+          <p>Recommendation, conversion, personalization.</p>
+        </div>
+      </div>
+
+      <div class="callout-inline">
+        <strong>Discussion prompt:</strong> Which of these domains touches your day-to-day work? Which decision in your organization should be data-informed but isn't? Hold on to those answers. We'll come back to them in Case Study 1.
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 10: Install checklist -->
+  <section class="slide" data-title="Install">
+    <div class="slide-inner">
+      <div class="center">
+        <span class="eyebrow">Lab · Block 03</span>
+        <h2 class="section">Install checklist. We do this together.</h2>
+        <p class="lede">Sixty minutes. You leave with all five tools running on your laptop. If we don't finish, you finish tonight. L02 assumes all five are working.</p>
+      </div>
+
+      <div class="checklist">
+        <div class="check">
+          <div class="icon"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h8v8H8z"/></svg></div>
+          <div class="tname">Excel</div>
+          <div class="note">Enable Data Analysis ToolPak.</div>
+        </div>
+        <div class="check">
+          <div class="icon"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6a8 3 0 0016 0V6M4 12v6a8 3 0 0016 0v-6"/></svg></div>
+          <div class="tname">Supabase</div>
+          <div class="note">Free account. Empty project.</div>
+        </div>
+        <div class="check">
+          <div class="icon"><svg viewBox="0 0 24 24"><path d="M4 20h16M4 20V4M20 20V10M12 20v-8M8 20v-4M16 20v-6"/></svg></div>
+          <div class="tname">Power BI</div>
+          <div class="note">Desktop install; blank report.</div>
+        </div>
+        <div class="check">
+          <div class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 10l3 3-3 3M13 16h4"/></svg></div>
+          <div class="tname">Colab</div>
+          <div class="note">Run <code>print("ITMA501")</code>.</div>
+        </div>
+        <div class="check">
+          <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg></div>
+          <div class="tname">RapidMiner</div>
+          <div class="note">Register with UAGM email.</div>
+        </div>
+      </div>
+
+      <div class="callout-inline callout-amber">
+        <strong>Watch-outs:</strong> Power BI Desktop is Windows-only. Colab needs a personal Google account. RapidMiner Educational license can take 24h to activate. If any of these hit you, pair up and defer the solo run to homework.
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 11: Classification lab preview -->
+  <section class="slide" data-title="Lab 2">
+    <div class="slide-inner center">
+      <span class="eyebrow">Lab · Block 04</span>
+      <h2 class="section">Four datasets. Three frameworks.</h2>
+      <p class="lede">In pairs, you'll take four small datasets and classify each one against the ladder, the four V's, and the three shapes. This is how the vocabulary sticks.</p>
+
+      <div class="grid-4">
+        <div class="shape-card"><div class="tag">Dataset 01</div><h4>retail-sales.xlsx</h4><div class="ex">Structured tabular. Ask: what happened last quarter?</div></div>
+        <div class="shape-card"><div class="tag">Dataset 02</div><h4>weblog-sample.json</h4><div class="ex">Semi-structured. Ask: why did conversions drop on mobile?</div></div>
+        <div class="shape-card"><div class="tag">Dataset 03</div><h4>reviews.txt</h4><div class="ex">Unstructured. Ask: what are customers complaining about?</div></div>
+        <div class="shape-card"><div class="tag">Dataset 04</div><h4>iot-stream.csv</h4><div class="ex">Structured, high-velocity. Ask: which sensor is about to fail?</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 12: Closing / next steps -->
+  <section class="slide closing-slide" data-title="Close">
+    <div class="slide-inner center">
+      <div class="squircle sq-2" style="margin-inline:auto;">
+        <svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-11"/></svg>
+      </div>
+      <h2 class="section">Three things before next Thursday.</h2>
+      <p class="lede">Write your one-page workplace analytics map. Finish any tool installs not completed today. Skim the Supabase SQL Editor quickstart so L02 lands soft.</p>
+
+      <div class="links">
+        <a class="pill" href="#">📄 Syllabus (PDF)</a>
+        <a class="pill" href="#">💻 LMS Course Page</a>
+        <a class="pill" href="#">🗂 GitHub Repo</a>
+        <a class="pill" href="#">📅 Office Hours</a>
+      </div>
+
+      <div class="callout-inline" style="margin-top:36px;">
+        <strong>What we did today:</strong> mapped the course arc, locked the toolchain, learned the vocabulary of analytics, and installed the stack. Next Thursday, we build our own data.
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 13: Anchor quote -->
+  <section class="slide quote-slide" data-title="Quote">
+    <div class="slide-inner">
+      <span class="eyebrow">Why this matters</span>
+      <blockquote>"Every company has big data in its future, and every company will eventually be in the data business."</blockquote>
+      <cite><strong>Thomas H. Davenport</strong>, Distinguished Professor, Babson College</cite>
+    </div>
+  </section>
+
+</div>
+
+<div class="chrome">
+  <button class="nav-btn" id="prev" aria-label="Previous slide">
+    <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+  </button>
+  <div class="pager" id="pager"></div>
+  <div style="display:flex; align-items:center; gap:16px;">
+    <span class="counter" id="counter">1 / 13</span>
+    <button class="nav-btn" id="next" aria-label="Next slide">
+      <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const prev = document.getElementById('prev');
+    const next = document.getElementById('next');
+    const pager = document.getElementById('pager');
+    const counter = document.getElementById('counter');
+    let i = 0;
+
+    slides.forEach((_, idx) => {
+      const dot = document.createElement('button');
+      dot.className = 'dot' + (idx === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', 'Go to slide ' + (idx + 1));
+      dot.addEventListener('click', () => go(idx));
+      pager.appendChild(dot);
+    });
+
+    function go(n) {
+      i = Math.max(0, Math.min(slides.length - 1, n));
+      slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+      pager.querySelectorAll('.dot').forEach((d, idx) => d.classList.toggle('active', idx === i));
+      counter.textContent = (i + 1) + ' / ' + slides.length;
+      prev.disabled = i === 0;
+      next.disabled = i === slides.length - 1;
+      history.replaceState(null, '', '#' + (i + 1));
+    }
+
+    prev.addEventListener('click', () => go(i - 1));
+    next.addEventListener('click', () => go(i + 1));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); go(i + 1); }
+      if (e.key === 'ArrowLeft'  || e.key === 'PageUp')                    { e.preventDefault(); go(i - 1); }
+      if (e.key === 'Home') { e.preventDefault(); go(0); }
+      if (e.key === 'End')  { e.preventDefault(); go(slides.length - 1); }
+    });
+
+    const initial = parseInt((location.hash || '#1').slice(1), 10);
+    if (!isNaN(initial)) go(initial - 1); else go(0);
+  })();
+</script>
+
+</body>
+</html>
