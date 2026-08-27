@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UAGM-ITMA501 · Lecture 01 · Speaker Notes</title>
+<style>
+  :root { --ink:#0A2540; --muted:#5B7A99; --bg:#F4F8FC; --card:#fff; --line:#DCE7F2; --blue:#2E6BB8; --teal:#14B8C4; --soft:#E8F1F8; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif; color:var(--ink); background:var(--bg); line-height:1.6; }
+  main { max-width:1050px; margin:0 auto; padding:48px 28px 80px; }
+  header { padding:34px; background:linear-gradient(145deg,#DCE9F4,#fff); border:1px solid var(--line); border-radius:18px; margin-bottom:28px; }
+  .eyebrow { color:var(--teal); font-size:12px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
+  h1 { margin:8px 0 10px; font-size:clamp(30px,5vw,52px); line-height:1.08; }
+  h2 { margin:0 0 10px; font-size:27px; }
+  h3 { margin:24px 0 6px; font-size:20px; color:var(--blue); }
+  p { margin:8px 0 14px; }
+  .lede { color:var(--muted); max-width:800px; font-size:17px; }
+  .meta { display:flex; flex-wrap:wrap; gap:18px; color:var(--muted); font-size:14px; margin-top:20px; }
+  section { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:25px 28px; margin:18px 0; box-shadow:0 5px 18px rgba(10,37,64,.05); }
+  .slide-label { display:inline-block; color:var(--teal); font-size:11px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
+  .timing { float:right; color:var(--muted); font-size:13px; font-weight:600; }
+  ul,ol { padding-left:23px; }
+  li { margin:6px 0; }
+  .prompt { border-left:4px solid var(--teal); background:#ECFDF5; padding:13px 17px; margin:16px 0; }
+  .watch { border-left:4px solid #F59E0B; background:#FFFBEB; padding:13px 17px; margin:16px 0; }
+  code { background:var(--soft); border-radius:5px; padding:2px 5px; }
+  .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+  .card { border:1px solid var(--line); border-radius:12px; padding:16px; }
+  .card h4 { margin:0 0 5px; color:var(--blue); }
+  table { width:100%; border-collapse:collapse; margin:15px 0; font-size:14px; }
+  th,td { text-align:left; vertical-align:top; padding:10px 12px; border-bottom:1px solid var(--line); }
+  th { background:var(--soft); color:var(--blue); }
+  footer { color:var(--muted); font-size:13px; margin-top:28px; }
+  @media (max-width:700px) { main { padding:22px 14px 50px; } section,header { padding:20px; } .grid { grid-template-columns:1fr; } .timing { float:none; display:block; margin-top:4px; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">Instructor guide · L01 · Units 1.1–1.4</div>
+    <h1>Business Analytics Introduction</h1>
+    <p class="lede">A practical speaking structure for the two-hour theory deck, followed by a two-hour Jamovi lab using the UCI Bank Marketing dataset.</p>
+    <div class="meta">
+      <span><strong>Theory:</strong> 120 min</span>
+      <span><strong>Lab:</strong> 120 min</span>
+      <span><strong>Primary dataset:</strong> UCI Bank Marketing</span>
+      <span><strong>Software:</strong> Jamovi</span>
+    </div>
+  </header>
+
+  <section>
+    <span class="slide-label">Before class</span>
+    <h2>Instructor setup</h2>
+    <ul>
+      <li>Install Jamovi on the instructor machine and test opening the semicolon-delimited CSV.</li>
+      <li>Download and extract <code>bank-additional-full.csv</code> from the UCI Bank Marketing archive.</li>
+      <li>Prepare a backup copy in the LMS or shared folder; downloading 40,000 rows live can fail.</li>
+      <li>Have students create a folder named <code>ITMA501-L01-Jamovi</code> and save an <code>.omv</code> file there.</li>
+      <li>Keep the lab question visible: <strong>Which customer characteristics are associated with a positive campaign response?</strong></li>
+    </ul>
+  </section>
+
+  <section>
+    <span class="slide-label">Slide 1 · Title</span><span class="timing">3–5 min</span>
+    <h2>Open the course with the decision, not the definitions</h2>
+    <p>Welcome students and frame analytics as a way to improve decisions. Explain that the class will move from a business question to evidence, and that the lab will make the idea concrete.</p>
+    <div class="prompt"><strong>Ask:</strong> “What is one decision in your work or organization that should be more data-informed?” Take two or three answers and reuse one as a running example.</div>
+    <p>Set expectations: this is not a software tour. The tools matter because they let students inspect evidence and defend a conclusion.</p>
+  </section>
+
+  <section>
+    <span class="slide-label">Slide 2 · Agenda</span><span class="timing">5 min</span>
+    <h2>Give students the map</h2>
+    <p>Walk across the four units in order. Tell students that each concept answers a different question:</p>
+    <ol>
+      <li>What kind of answer are we seeking?</li>
+      <li>What makes a dataset “big” or difficult?</li>
+      <li>What shape does the data have?</li>
+      <li>Where do organizations use these ideas?</li>
+    </ol>
+    <p>Explain the rhythm: theory supplies vocabulary; the lab lets students use that vocabulary on a real business dataset.</p>
+  </section>
+
+  <section>
+    <span class="slide-label">Slide 3 · Unit 1.1</span><span class="timing">25 min</span>
+    <h2>Methods and model families</h2>
+    <p>Use one retail example throughout. Begin with a monthly sales table and progressively change the question. Emphasize that the four families are not competing labels; they are increasingly decision-oriented uses of evidence.</p>
+    <div class="grid">
+      <div class="card"><h4>Descriptive</h4><p>“What happened?” Show totals, averages, counts, and distributions.</p></div>
+      <div class="card"><h4>Diagnostic</h4><p>“Why did it happen?” Compare segments, time periods, or operational causes.</p></div>
+      <div class="card"><h4>Predictive</h4><p>“What is likely to happen?” Estimate a future value or probability.</p></div>
+      <div class="card"><h4>Prescriptive</h4><p>“What should we do?” Select an action under constraints.</p></div>
+    </div>
+    <h3>Suggested walkthrough with Bank Marketing</h3>
+    <ol>
+      <li>Start with <code>y</code> and show a frequency table: subscribed versus did not subscribe.</li>
+      <li>Ask what might explain the difference. Introduce <code>contact</code>, <code>job</code>, and <code>education</code> as possible comparison variables.</li>
+      <li>Use a crosstab to compare response rates by one variable. Name the denominator: “Among customers contacted by cellular phone, X% subscribed.”</li>
+      <li>Explain that a predictive model could estimate <code>y</code> for a new customer using age, job, education, and contact method.</li>
+      <li>Finish with the prescriptive decision: whom should the bank contact, through which channel, and how often?</li>
+    </ol>
+    <h3>Jamovi demonstration: establish the outcome first</h3>
+    <ol>
+      <li>Open <strong>Analyses → Exploration → Descriptives</strong>.</li>
+      <li>Move <code>y</code> into the analysis field.</li>
+      <li>Request a frequency table and bar chart.</li>
+      <li>Ask students: “What proportion of contacted customers subscribed?”</li>
+      <li>Explain that <code>y = yes</code> means the customer subscribed to a term deposit and <code>y = no</code> means they did not.</li>
+      <li>Reuse <code>y</code> as the outcome when comparing <code>contact</code>, <code>job</code>, or <code>education</code> with crosstabs.</li>
+    </ol>
+    <div class="watch"><strong>Boundary:</strong> Jamovi supports the descriptive and diagnostic demonstration today. Treat predictive and prescriptive analytics as the next decision layer, not as conclusions from this simple comparison.</div>
+    <div class="prompt"><strong>Check understanding:</strong> give a scenario such as “customers who may cancel next month.” Ask students to identify the model family and explain why.</div>
+    <div class="watch"><strong>Do not overpromise:</strong> predictive and prescriptive analytics do not automatically produce correct decisions. Data quality, assumptions, and costs still matter.</div>
+  </section>
+
+  <section>
+    <span class="slide-label">Slide 4 · Unit 1.2</span><span class="timing">25 min</span>
+    <h2>The 4 V’s are operational questions</h2>
+    <p>Present each V as a constraint that changes how an analyst works. Avoid treating “Big Data” as only a very large file.</p>
+    <table>
+      <tr><th>V</th><th>Convey it as</th><th>Class prompt</th></tr>
+      <tr><td>Volume</td><td>How much must we store or process?</td><td>Could Jamovi hold this dataset?</td></tr>
+      <tr><td>Velocity</td><td>How quickly does information arrive?</td><td>Would a weekly report be enough?</td></tr>
+      <tr><td>Variety</td><td>How many formats and schemas must we combine?</td><td>What changes when we add JSON or text?</td></tr>
+      <tr><td>Veracity</td><td>How much should we trust the measurement?</td><td>What could make a “yes” response misleading?</td></tr>
+    </table>
+    <p>Connect forward to the lab: the UCI file is manageable in volume, mostly structured, and still requires veracity checks such as missing values and ambiguous categories.</p>
+    <h3>Suggested walkthrough with the lab dataset</h3>
+    <ol>
+      <li><strong>Volume:</strong> show that roughly 40,000 rows are substantial enough to feel real but small enough for Jamovi.</li>
+      <li><strong>Velocity:</strong> point out that the file is historical and static; it represents batch analysis, not live campaign monitoring.</li>
+      <li><strong>Variety:</strong> identify numeric fields such as <code>age</code> and categorical fields such as <code>job</code> and <code>contact</code>; explain that multiple types coexist in one table.</li>
+      <li><strong>Veracity:</strong> inspect “unknown” values, the meaning of <code>pdays = 999</code>, and the fact that <code>duration</code> is only known after a call ends.</li>
+      <li>Ask students which V would become the main problem if the bank received millions of new call events every day.</li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="slide-label">Slide 5 · Unit 1.3</span><span class="timing">20 min</span>
+    <h2>Data shape determines the first tool</h2>
+    <p>Contrast three representations of the same business event: a row in a table, a nested JSON event, and a customer email. Ask students what can be counted immediately and what requires transformation.</p>
+    <ul>
+      <li><strong>Structured:</strong> fixed rows and columns; ideal for Jamovi, SQL, spreadsheets.</li>
+      <li><strong>Semi-structured:</strong> nested or optional fields; requires parsing and normalization.</li>
+      <li><strong>Unstructured:</strong> text, images, audio, or video; requires extraction before conventional analysis.</li>
+    </ul>
+    <h3>Suggested walkthrough with three representations</h3>
+    <ol>
+      <li>Show one Bank Marketing row as a structured record: one customer/contact event with named columns.</li>
+      <li>Imagine the same event arriving as JSON, with nested campaign metadata and optional fields. Ask what must be extracted before Jamovi can use it.</li>
+      <li>Imagine a call transcript or customer email. Explain that the text is useful, but must first be converted into features such as sentiment or topic.</li>
+      <li>Return to the CSV and explicitly connect the tool choice: Jamovi is appropriate because the immediate questions concern rows, columns, counts, and distributions.</li>
+    </ol>
+    <div class="prompt"><strong>Bridge:</strong> “Today we will stay with structured data so we can focus on analytical reasoning rather than file engineering.”</div>
+  </section>
+
+  <section>
+    <span class="slide-label">Slide 6 · Unit 1.4</span><span class="timing">20 min</span>
+    <h2>Make the domains feel like decisions</h2>
+    <p>For each domain, name the decision first and the technique second. For example: “How much inventory should we hold?” leads to forecasting and optimization in supply chain.</p>
+    <div class="grid">
+      <div class="card"><h4>Supply chain</h4><p>Forecast demand, reduce stockouts, optimize inventory.</p></div>
+      <div class="card"><h4>Finance</h4><p>Detect fraud, assess risk, prioritize investigations.</p></div>
+      <div class="card"><h4>Marketing</h4><p>Segment customers, evaluate campaigns, improve response.</p></div>
+      <div class="card"><h4>HR and Web</h4><p>Understand attrition, personalize experiences, improve conversion.</p></div>
+    </div>
+    <p>Use the Bank Marketing dataset as the transition: it is a marketing dataset, but students can practice all four model questions around it.</p>
+    <h3>Suggested domain connections</h3>
+    <ul>
+      <li><strong>Supply chain:</strong> translate the same logic to “which products will stock out?”</li>
+      <li><strong>Finance:</strong> translate it to “which transaction deserves review?” and distinguish a risk score from a final decision.</li>
+      <li><strong>Marketing:</strong> use <code>y</code> as the response outcome and discuss campaign targeting.</li>
+      <li><strong>HR:</strong> compare the idea with attrition prediction, emphasizing privacy and fairness.</li>
+      <li><strong>Web:</strong> compare campaign response with conversion or recommendation behavior.</li>
+    </ul>
+    <div class="prompt"><strong>Teaching move:</strong> have students choose one domain and state one descriptive, one predictive, and one prescriptive question for it.</div>
+  </section>
+
+  <section>
+    <span class="slide-label">Slide 7 · Dataset options</span><span class="timing">10 min</span>
+    <h2>Choose a dataset that teaches the method</h2>
+    <p>Recommend <strong>UCI Bank Marketing</strong> for this class. It has a clear business outcome (<code>y</code>), numeric variables such as age and duration, categorical variables such as job and education, and enough rows to feel real without overwhelming Jamovi.</p>
+    <ul>
+      <li><strong>Primary:</strong> UCI Bank Marketing — best fit for the planned lab.</li>
+      <li><strong>Fallback:</strong> Titanic — small and familiar, but less directly connected to business decisions.</li>
+      <li><strong>Alternative:</strong> Gapminder — excellent for indicators and plots, weaker for a single response outcome.</li>
+    </ul>
+    <p>Explain that the dataset is not proof of causation. Students are looking for patterns and associations, not claiming that a variable causes a campaign response.</p>
+    <h3>Recommended choice and download plan</h3>
+    <ol>
+      <li>Use UCI Bank Marketing as the common class dataset so every group can follow the same demonstration.</li>
+      <li>Download the ZIP before class and keep a copy in the LMS. The archive contains <code>bank-additional-full.csv</code>, which uses a semicolon delimiter.</li>
+      <li>Have students open the file in Jamovi and confirm that the first row is variable names and that categorical values are not being treated as numbers.</li>
+      <li>Use Titanic only as a backup if the UCI download or extraction fails; it is simpler, but less aligned with the marketing decision in this lecture.</li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="slide-label">Slide 8 · Summary</span><span class="timing">10 min</span>
+    <h2>Close theory by making students say the framework</h2>
+    <p>Ask students to complete this sentence aloud: “A good analyst matches the business question to a model, evaluates the data’s 4 V’s, identifies its shape, and communicates a decision-relevant finding.”</p>
+    <div class="prompt"><strong>Transition to lab:</strong> “Now we will test the framework. We will download one dataset, inspect its structure and trustworthiness, then produce evidence for one marketing decision.”</div>
+  </section>
+
+  <section>
+    <span class="slide-label">Lab · Jamovi workflow</span>
+    <h2>A guided 120-minute practical</h2>
+    <table>
+      <tr><th>Time</th><th>Instructor move</th><th>Student output</th></tr>
+      <tr><td>10 min</td><td>Download/extract the UCI archive; show the file and delimiter.</td><td>CSV opened in Jamovi.</td></tr>
+      <tr><td>15 min</td><td>Inspect rows, columns, variable types, missing values, and category labels.</td><td>Data-quality checklist.</td></tr>
+      <tr><td>20 min</td><td>Demonstrate frequencies for <code>job</code>, <code>education</code>, <code>contact</code>, and <code>y</code>.</td><td>One frequency table and one bar chart.</td></tr>
+      <tr><td>20 min</td><td>Demonstrate descriptives for <code>age</code>, <code>duration</code>, <code>campaign</code>, and <code>pdays</code>.</td><td>Mean, median, SD, min/max, histogram.</td></tr>
+      <tr><td>25 min</td><td>Guide a crosstab of <code>y</code> by <code>contact</code>, <code>job</code>, or <code>education</code>.</td><td>Counts plus row percentages.</td></tr>
+      <tr><td>20 min</td><td>Groups select three candidate predictors and compare response rates.</td><td>Two or three defensible findings.</td></tr>
+      <tr><td>10 min</td><td>Have groups share one finding, one limitation, and one next question.</td><td>Short verbal readout.</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <span class="slide-label">Lab · Instructor walkthrough</span>
+    <h2>How to guide students without taking over</h2>
+    <ol>
+      <li><strong>Open:</strong> Jamovi → Open → This PC/Mac → select the CSV. If prompted, confirm semicolon delimiter and that the first row contains variable names.</li>
+      <li><strong>Set measurement levels:</strong> nominal for categories such as <code>job</code> and <code>y</code>; continuous for <code>age</code>, <code>duration</code>, and <code>campaign</code>. Explain that type selection changes available analyses.</li>
+      <li><strong>Inspect before analyzing:</strong> ask students to identify “unknown” values, zeros, extreme durations, and variables whose meaning is not obvious. Do not silently delete unusual rows.</li>
+      <li><strong>Frequencies:</strong> Analyses → Exploration → Descriptives. Move categorical variables into the analysis and request frequency tables and bar plots.</li>
+      <li><strong>Numeric descriptives:</strong> add mean, median, standard deviation, minimum, maximum, and histogram. Ask whether the mean is representative when the distribution is skewed.</li>
+      <li><strong>Crosstabs:</strong> Frequencies → Contingency Tables → Independent Samples. Put <code>y</code> in rows and a candidate variable in columns; request counts and row percentages.</li>
+      <li><strong>Interpret:</strong> require students to state the denominator: “Among customers contacted by cellular phone, X% subscribed.” This prevents confusing counts with rates.</li>
+      <li><strong>Save:</strong> File → Save As → <code>UAGM-ITMA501-L01-Group##.omv</code>. Export key tables or plots as images/PDF only after the analysis is saved.</li>
+    </ol>
+    <div class="watch"><strong>Teaching guardrail:</strong> do not let students rank variables only by the largest count. The useful comparison is usually a response percentage within each group.</div>
+  </section>
+
+  <section>
+    <span class="slide-label">Lab · Required deliverable</span>
+    <h2>What students should produce</h2>
+    <ol>
+      <li>A saved Jamovi <code>.omv</code> file with the original data, correctly typed variables, and reproducible analyses.</li>
+      <li>One data-quality note: missingness, ambiguous values, sampling limitation, or a measurement concern.</li>
+      <li>One frequency table and chart for a categorical variable.</li>
+      <li>One descriptive table and histogram for a numeric variable.</li>
+      <li>One crosstab with counts and row percentages.</li>
+      <li>A 200–250 word interpretation answering: “Which three features appear most associated with a positive campaign response, and what should we avoid claiming?”</li>
+    </ol>
+    <p>Grade the reasoning, not whether the group discovers a particular “winning” variable. A careful limitation is evidence of learning.</p>
+  </section>
+
+  <section>
+    <span class="slide-label">Close · Debrief</span>
+    <h2>End with evidence, uncertainty, and next steps</h2>
+    <p>Have each group report in this order: <strong>question → method → result → limitation → action or next question</strong>. This gives students a repeatable communication pattern for the rest of the course.</p>
+    <div class="prompt"><strong>Final bridge:</strong> “Today we inspected a flat file. In L02, we will learn how relational databases store the same kind of information across connected tables and how SQL retrieves it.”</div>
+  </section>
+
+  <footer>
+    Dataset source: UCI Machine Learning Repository, Bank Marketing. Archive:
+    https://archive.ics.uci.edu/ml/machine-learning-databases/00222/bank-additional.zip
+    · Jamovi: https://www.jamovi.org/
+  </footer>
+</main>
+</body>
+</html>
