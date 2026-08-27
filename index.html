@@ -384,6 +384,7 @@
     <ul>
       <li><a href="#about" class="active">About the course</a></li>
       <li><a href="#lectures">Lectures</a></li>
+      <li><a href="#labs">Labs</a></li>
       <li><a href="#grading">Grading</a></li>
       <li><a href="#syllabus">Syllabus</a></li>
       <li><a href="#tools">Tools &amp; lab</a></li>
@@ -433,10 +434,10 @@
       <p>Click any available lecture to open its slide deck. Lectures unlock as the term progresses.</p>
 
       <div class="lectures">
-        <a class="lecture-row is-available" href="Lectures/UAGM-ITMA501-L01%20-%20Welcome%20and%20Syllabus%20Discussion%20-%20Slides.html">
-          <div class="lec-num">L01</div>
+        <a class="lecture-row is-available" href="Lectures/UAGM-ITMA501-L00%20-%20Welcome%20Syllabus%20and%20Foundations%20-%20Slides.html">
+          <div class="lec-num">L00</div>
           <div class="lec-body">
-            <h4>Welcome and Syllabus Discussion</h4>
+            <h4>Welcome, Syllabus &amp; Foundations</h4>
             <p>Course kickoff: expectations, syllabus walkthrough, grading structure, and toolchain.</p>
           </div>
           <span class="lec-cta">
@@ -445,19 +446,53 @@
           </span>
         </a>
 
-        <div class="lecture-row is-pending">
+        <a class="lecture-row is-available" href="Lectures/UAGM-ITMA501-L01%20-%20Business%20Analytics%20Introduction%20-%20Slides.html">
+          <div class="lec-num">L01</div>
+          <div class="lec-body">
+            <h4>Business Analytics Introduction</h4>
+            <p>Foundational overview and course framing.</p>
+          </div>
+          <span class="lec-cta">
+            Open slides
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </span>
+        </a>
+
+        <a class="lecture-row is-available" href="Lectures/UAGM-ITMA501-L02%20-%20Relational%20Data%20and%20SQL%20End-to-End%20-%20Slides.html">
           <div class="lec-num">L02</div>
           <div class="lec-body">
-            <h4>To be scheduled</h4>
-            <p>Additional lectures will appear here as the syllabus is distributed across sessions.</p>
+            <h4>Relational Data and SQL End-to-End</h4>
+            <p>Structured data ingestion, SQL basics, and end-to-end pipelines.</p>
           </div>
-          <span class="lec-cta">Coming soon</span>
-        </div>
+          <span class="lec-cta">
+            Open slides
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </span>
+        </a>
       </div>
 
       <div class="callout tip">
         <div class="label">Bring a laptop</div>
         <p>Most sessions include hands-on work. Install the required software before <strong>L02</strong>. See <a href="#tools">Tools &amp; lab</a> for the list.</p>
+      </div>
+    </section>
+
+    <section id="labs">
+      <h2>Labs</h2>
+      <p>Use these guided activities to practice the concepts from each lecture. Labs include instructions, datasets, and required deliverables.</p>
+
+      <div class="lectures">
+        <a class="lecture-row is-available" href="Lectures/UAGM-ITMA501-L01%20-%20Business%20Analytics%20Introduction%20-%20Lab.html">
+          <div class="lec-num">L01</div>
+          <div class="lec-body">
+            <h4>Business Analytics Introduction</h4>
+            <p>Jamovi lab: inspect the UCI Bank Marketing dataset, produce descriptives, and compare campaign response rates.</p>
+          </div>
+          <span class="lec-cta">
+            Open lab
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </span>
+        </a>
       </div>
     </section>
 
@@ -471,10 +506,10 @@
             <tr><th>#</th><th>Componente</th><th>Weight</th><th>Notes</th></tr>
           </thead>
           <tbody>
-            <tr><td>1</td><td><strong>Asignaciones</strong></td><td>25%</td><td>Applied exercises tied to each unit.</td></tr>
-            <tr><td>2</td><td><strong>Quizzes</strong></td><td>25%</td><td>Short, frequent checks on core concepts.</td></tr>
-            <tr><td>3</td><td><strong>Estudios de casos</strong></td><td>25%</td><td>Required by UAGM institutional policy.</td></tr>
-            <tr><td>4</td><td><strong>Examen Final</strong></td><td>25%</td><td>Cumulative, covering all eight units.</td></tr>
+            <tr><td>1</td><td><strong>Laboratorios</strong></td><td>25%</td><td>Laboratorios de ejercicios aplicados asociados a cada unidad.</td></tr>
+            <tr><td>2</td><td><strong>Quizzes</strong></td><td>25%</td><td>Evaluaciones cortas y frecuentes de componentes principales del curso.</td></tr>
+            <tr><td>3</td><td><strong>Estudios de casos</strong></td><td>25%</td><td>Requeridos por politica institucional UAGM.</td></tr>
+            <tr><td>4</td><td><strong>Examen Final</strong></td><td>25%</td><td>Examen final acumulativo, cubre todas las unidades del curso.</td></tr>
           </tbody>
           <tfoot>
             <tr><td colspan="2">TOTAL</td><td>100%</td><td></td></tr>
@@ -597,13 +632,13 @@
 
       <div class="callout warn">
         <div class="label">Install before L02</div>
-        <p>Bring your laptop to every session, with at least one statistical tool and Python (or a working Colab account) installed and verified. We will reconcile the toolchain in L01 and lock the list before L02.</p>
+        <p>Bring your laptop to every session, with at least one statistical tool and Python (or a working Colab account) installed and verified. We will reconcile the toolchain in L00 and lock the list before L02.</p>
       </div>
     </section>
 
     <section id="instructor">
       <h2>Instructor</h2>
-      <p><strong>Wilson Díaz</strong> teaches this course at UAGM. Office hours, contact info, and policy questions are covered in L01 and posted on the LMS.</p>
+      <p><strong>Wilson Díaz</strong> teaches this course at UAGM. Office hours, contact info, and policy questions are covered in L00 and posted on the LMS.</p>
 
       <div class="pull">
         <blockquote>"Analytics is not about the tool. It is about a defensible decision you can explain to someone who pays for the consequences."</blockquote>
@@ -615,9 +650,9 @@
       <h3>Before the next session</h3>
       <p>Three things to do this week.</p>
       <div class="pills">
-        <a class="pill" href="Lectures/UAGM-ITMA501-L01%20-%20Welcome%20and%20Syllabus%20Discussion%20-%20Slides.html">
+        <a class="pill" href="Lectures/UAGM-ITMA501-L00%20-%20Welcome%20Syllabus%20and%20Foundations%20-%20Slides.html">
           <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-          Review L01 slides
+          Review L00 slides
         </a>
         <a class="pill" href="#tools">
           <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12l2 2 4-4"/></svg>
