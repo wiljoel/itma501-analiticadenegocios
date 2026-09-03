@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UAGM-ITMA501 · L02 · Laboratorio</title>
+<style>
+  :root { --ink:#0A2540; --muted:#5B7A99; --bg:#F4F8FC; --card:#fff; --line:#DCE7F2; --blue:#2E6BB8; --teal:#14B8C4; --soft:#E8F1F8; --green:#ECFDF5; --amber:#FFFBEB; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif; color:var(--ink); background:var(--bg); line-height:1.6; }
+  main { max-width:1050px; margin:0 auto; padding:42px 26px 75px; }
+  header { background:linear-gradient(145deg,#DCE9F4,#fff); border:1px solid var(--line); border-radius:18px; padding:32px; margin-bottom:22px; }
+  .eyebrow { color:var(--teal); font-size:12px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
+  h1 { margin:8px 0 10px; font-size:clamp(30px,5vw,52px); line-height:1.1; }
+  h2 { margin:0 0 10px; font-size:27px; color:var(--blue); }
+  h3 { margin:24px 0 7px; font-size:19px; color:var(--blue); }
+  p { margin:8px 0 14px; }
+  .lede { max-width:820px; color:var(--muted); font-size:17px; }
+  .meta { display:flex; flex-wrap:wrap; gap:18px; color:var(--muted); font-size:14px; margin-top:18px; }
+  section { background:var(--card); border:1px solid var(--line); border-radius:15px; padding:24px 28px; margin:16px 0; box-shadow:0 5px 18px rgba(10,37,64,.05); }
+  ul,ol { padding-left:23px; }
+  li { margin:6px 0; }
+  .callout { padding:14px 17px; margin:16px 0; border-left:4px solid var(--teal); background:var(--green); }
+  .warning { border-left-color:#F59E0B; background:var(--amber); }
+  code { background:var(--soft); padding:2px 5px; border-radius:5px; }
+  pre { overflow:auto; background:#0A2540; color:#F4F8FC; padding:14px 16px; border-radius:9px; font-size:13px; }
+  table { width:100%; border-collapse:collapse; margin:14px 0; font-size:14px; }
+  th,td { text-align:left; vertical-align:top; padding:10px 12px; border-bottom:1px solid var(--line); }
+  th { background:var(--soft); color:var(--blue); }
+  .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:15px; }
+  .card { border:1px solid var(--line); border-radius:11px; padding:15px; }
+  .card h4 { margin:0 0 5px; color:var(--blue); }
+  footer { color:var(--muted); font-size:13px; margin-top:24px; }
+  @media (max-width:700px) { main { padding:20px 14px 50px; } section,header { padding:20px; } .grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">UAGM-ITMA501 · L02 · Laboratorio</div>
+    <h1>Datos relacionales y SQL de principio a fin</h1>
+    <p class="lede">En este laboratorio utilizarás Supabase para consultar las tablas de Olist, practicarás 15 consultas SQL y exportarás un resultado reproducible para responder una pregunta de negocio. El informe en Power BI se construirá en el laboratorio de L03.</p>
+    <div class="meta">
+      <span><strong>Duración:</strong> 2 horas</span>
+      <span><strong>Herramienta:</strong> Supabase SQL Editor</span>
+      <span><strong>Dataset:</strong> Olist Brazilian E-Commerce</span>
+      <span><strong>Modalidad:</strong> individual o grupos de 2–3</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>1. Objetivos del laboratorio</h2>
+    <p>Al completar esta actividad podrás:</p>
+    <ol>
+      <li>Conectarte a una base de datos PostgreSQL mediante el SQL Editor de Supabase.</li>
+      <li>Escribir consultas con <code>SELECT</code>, <code>FROM</code>, <code>WHERE</code> y operadores de filtrado.</li>
+      <li>Resumir datos con <code>COUNT</code>, <code>SUM</code>, <code>AVG</code>, <code>GROUP BY</code> y <code>HAVING</code>.</li>
+      <li>Combinar tablas usando <code>INNER JOIN</code> y <code>LEFT JOIN</code>.</li>
+      <li>Exportar resultados SQL a un archivo CSV con un nombre reproducible.</li>
+      <li>Comunicar un hallazgo de negocio indicando el método y una limitación.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>2. Contexto de negocio y datos</h2>
+    <p>Olist es un marketplace brasileño de comercio electrónico. El dataset contiene aproximadamente 100,000 órdenes de 2016 a 2018 distribuidas en nueve tablas relacionadas.</p>
+    <p><strong>Ubicación de los datos:</strong> descarga el dataset desde la <a href="https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce">página de Olist Brazilian E-Commerce en Kaggle</a>. El archivo contiene los nueve CSV utilizados en este laboratorio.</p>
+    <div class="grid">
+      <div class="card"><h4>Tablas principales</h4><p><code>olist_customers_dataset</code>, <code>olist_orders_dataset</code>, <code>olist_order_items_dataset</code>, <code>olist_products_dataset</code> y <code>olist_sellers_dataset</code>.</p></div>
+      <div class="card"><h4>Pregunta central</h4><p>¿Quiénes son los 10 clientes que generan más ingresos y cuál es la categoría que más compran?</p></div>
+    </div>
+    <div class="callout warning"><strong>Importante:</strong> una fila de <code>olist_order_items_dataset</code> representa un artículo, no necesariamente una orden completa. Revisa siempre el nivel de detalle antes de sumar o contar.</div>
+  </section>
+
+  <section>
+    <h2>3. Preparar Supabase y verificar las tablas</h2>
+    <ol>
+      <li>Abre tu proyecto de Supabase y entra al <strong>SQL Editor</strong>.</li>
+      <li>Ejecuta el script de ingestión proporcionado por el instructor: <code>L02-olist-ingest.sql</code>.</li>
+      <li>Confirma que existan las nueve tablas y que los nombres coincidan con el diagrama ER.</li>
+      <li>Si la ingestión falla, utiliza la copia de respaldo o trabaja con un compañero mientras el instructor revisa el problema.</li>
+      <li>Abre una consulta nueva y ejecuta <code>SELECT COUNT(*) FROM nombre_de_tabla;</code> para comprobar que contiene filas.</li>
+    </ol>
+    <p>Registra cualquier diferencia entre el diagrama y tus tablas. Los valores de ciudad suelen estar en minúsculas y algunos campos de categoría pueden ser <code>NULL</code>.</p>
+  </section>
+
+  <section>
+    <h2>4. Subir los nueve CSV a Supabase</h2>
+    <p>Si no utilizas el script de ingestión del instructor, puedes cargar los archivos manualmente desde <strong>Table Editor</strong>. Descarga y extrae el dataset desde la <a href="https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce">página de Olist Brazilian E-Commerce en Kaggle</a>.</p>
+    <ol>
+      <li>Abre tu proyecto de Supabase y selecciona <strong>Table Editor</strong>.</li>
+      <li>Selecciona <strong>New table</strong> o <strong>Import data from CSV</strong>.</li>
+      <li>Importa un archivo a la vez. Activa la opción para usar la primera fila como nombres de columnas, conserva el delimitador coma y utiliza codificación UTF-8.</li>
+      <li>Usa como nombre de tabla el nombre del archivo sin <code>.csv</code>. Por ejemplo, <code>olist_orders_dataset.csv</code> debe convertirse en <code>olist_orders_dataset</code>.</li>
+      <li>Revisa los tipos antes de confirmar: los identificadores y ZIP prefixes deben ser texto; precios, fletes, conteos y puntuaciones deben ser numéricos; los timestamps originales pueden mantenerse como texto.</li>
+      <li>Repite el procedimiento para los nueve archivos de la tabla siguiente. No cambies los nombres de las tablas ni de las columnas.</li>
+    </ol>
+    <table>
+      <tr><th>Archivo</th><th>Tabla que debes crear</th></tr>
+      <tr><td><code>olist_customers_dataset.csv</code></td><td><code>olist_customers_dataset</code></td></tr>
+      <tr><td><code>olist_orders_dataset.csv</code></td><td><code>olist_orders_dataset</code></td></tr>
+      <tr><td><code>olist_order_items_dataset.csv</code></td><td><code>olist_order_items_dataset</code></td></tr>
+      <tr><td><code>olist_products_dataset.csv</code></td><td><code>olist_products_dataset</code></td></tr>
+      <tr><td><code>olist_sellers_dataset.csv</code></td><td><code>olist_sellers_dataset</code></td></tr>
+      <tr><td><code>olist_order_payments_dataset.csv</code></td><td><code>olist_order_payments_dataset</code></td></tr>
+      <tr><td><code>olist_order_reviews_dataset.csv</code></td><td><code>olist_order_reviews_dataset</code></td></tr>
+      <tr><td><code>olist_geolocation_dataset.csv</code></td><td><code>olist_geolocation_dataset</code></td></tr>
+      <tr><td><code>product_category_name_translation.csv</code></td><td><code>product_category_name_translation</code></td></tr>
+    </table>
+    <div class="callout warning"><strong>Archivo grande:</strong> <code>olist_geolocation_dataset.csv</code> contiene aproximadamente un millón de filas y puede tardar más que los demás. No cierres la pestaña mientras la carga está en progreso.</div>
+    <h3>Verificar que las cargas terminaron</h3>
+    <p>En el SQL Editor, ejecuta este conteo. No necesitas obtener exactamente estos valores si el archivo o la versión del dataset cambió, pero cada tabla debe tener filas:</p>
+    <pre>SELECT 'customers' AS table_name, COUNT(*) FROM olist_customers_dataset
+UNION ALL
+SELECT 'orders', COUNT(*) FROM olist_orders_dataset
+UNION ALL
+SELECT 'order_items', COUNT(*) FROM olist_order_items_dataset
+UNION ALL
+SELECT 'products', COUNT(*) FROM olist_products_dataset
+UNION ALL
+SELECT 'sellers', COUNT(*) FROM olist_sellers_dataset
+UNION ALL
+SELECT 'payments', COUNT(*) FROM olist_order_payments_dataset
+UNION ALL
+SELECT 'reviews', COUNT(*) FROM olist_order_reviews_dataset
+UNION ALL
+SELECT 'geolocation', COUNT(*) FROM olist_geolocation_dataset
+UNION ALL
+SELECT 'translations', COUNT(*) FROM product_category_name_translation;</pre>
+    <p>Si una tabla no existe o tiene cero filas, revisa el nombre y repite esa importación antes de comenzar las consultas.</p>
+    <div class="callout"><strong>Alternativa:</strong> si el importador falla, utiliza <code>L02-olist-ingest.sql</code> o solicita la copia de respaldo del instructor. No pegues el contenido completo de un CSV dentro del SQL Editor.</div>
+  </section>
+
+  <section>
+    <h2>5. Reglas rápidas de SQL</h2>
+    <table>
+      <tr><th>Necesidad</th><th>SQL</th><th>Ejemplo</th></tr>
+      <tr><td>Escoger columnas</td><td><code>SELECT</code></td><td><code>SELECT customer_id, customer_state</code></td></tr>
+      <tr><td>Escoger filas</td><td><code>WHERE</code></td><td><code>WHERE customer_state = 'SP'</code></td></tr>
+      <tr><td>Agrupar resultados</td><td><code>GROUP BY</code></td><td><code>GROUP BY customer_state</code></td></tr>
+      <tr><td>Filtrar grupos</td><td><code>HAVING</code></td><td><code>HAVING COUNT(*) &gt; 1000</code></td></tr>
+      <tr><td>Buscar valores ausentes</td><td><code>IS NULL</code></td><td><code>WHERE product_category_name IS NULL</code></td></tr>
+    </table>
+    <div class="callout warning"><strong>Error frecuente:</strong> <code>WHERE column = NULL</code> no funciona. Para valores ausentes utiliza <code>IS NULL</code> o <code>IS NOT NULL</code>.</div>
+  </section>
+
+  <section>
+    <h2>6. Laboratorio A — 15 consultas contra Olist</h2>
+    <p>Escribe y ejecuta cada consulta en Supabase. Antes de ver la solución, intenta describir qué resultado esperas. Coloca un comentario encima de cada consulta indicando qué devuelve.</p>
+
+    <h3>Parte A — SELECT y WHERE (Q1–Q5)</h3>
+    <pre>-- Q1: Lista 10 clientes de São Paulo
+SELECT customer_id, customer_city, customer_state
+FROM   olist_customers_dataset
+WHERE  customer_state = 'SP'
+LIMIT  10;
+
+-- Q2: ¿Cuántos productos cuestan más de R$500?
+SELECT COUNT(*)
+FROM   olist_order_items_dataset
+WHERE  price &gt; 500;
+
+-- Q3: Estados de las órdenes que aparecen en el dataset
+SELECT DISTINCT order_status
+FROM   olist_orders_dataset;
+
+-- Q4: Reseñas con la puntuación más baja
+SELECT review_id, review_score, review_comment_message
+FROM   olist_order_reviews_dataset
+WHERE  review_score = 1
+LIMIT  10;
+
+-- Q5: Vendedores ubicados en la ciudad de Rio de Janeiro
+SELECT seller_id, seller_city
+FROM   olist_sellers_dataset
+WHERE  seller_city = 'rio de janeiro';</pre>
+    <p>Si Q5 no devuelve resultados, inspecciona primero algunos valores de <code>seller_city</code>; no cambies el filtro sin verificar la representación almacenada.</p>
+
+    <h3>Parte B — Operadores (Q6–Q8)</h3>
+    <pre>-- Q6: Clientes cuya ciudad comienza con 'sao'
+SELECT COUNT(*)
+FROM   olist_customers_dataset
+WHERE  customer_city LIKE 'sao%';
+
+-- Q7: Órdenes de SP, RJ o MG
+SELECT COUNT(*)
+FROM   olist_orders_dataset o
+JOIN   olist_customers_dataset c ON o.customer_id = c.customer_id
+WHERE  c.customer_state IN ('SP', 'RJ', 'MG');
+
+-- Q8: Artículos con precio entre R$100 y R$200
+SELECT COUNT(*)
+FROM   olist_order_items_dataset
+WHERE  price BETWEEN 100 AND 200;</pre>
+
+    <h3>Parte C — Agregaciones (Q9–Q12)</h3>
+    <pre>-- Q9: Ingreso bruto total
+SELECT SUM(price + freight_value) AS gross_revenue
+FROM   olist_order_items_dataset;
+
+-- Q10: Número de órdenes por estado, top 10
+SELECT c.customer_state, COUNT(*) AS orders
+FROM   olist_orders_dataset o
+JOIN   olist_customers_dataset c ON o.customer_id = c.customer_id
+GROUP  BY c.customer_state
+ORDER  BY orders DESC
+LIMIT  10;
+
+-- Q11: Puntuación promedio por estado de la orden
+SELECT o.order_status, AVG(r.review_score) AS avg_score, COUNT(*) AS reviews
+FROM   olist_orders_dataset o
+JOIN   olist_order_reviews_dataset r ON o.order_id = r.order_id
+GROUP  BY o.order_status
+ORDER  BY avg_score DESC;
+
+-- Q12: Categorías con más de 500 productos únicos
+SELECT p.product_category_name, COUNT(DISTINCT p.product_id) AS product_count
+FROM   olist_products_dataset p
+GROUP  BY p.product_category_name
+HAVING COUNT(DISTINCT p.product_id) &gt; 500
+ORDER  BY product_count DESC;</pre>
+
+    <h3>Parte D — JOINs (Q13–Q15)</h3>
+    <pre>-- Q13: Información de orden y cliente
+SELECT o.order_id, c.customer_state, o.order_status
+FROM   olist_orders_dataset o
+JOIN   olist_customers_dataset c ON o.customer_id = c.customer_id
+LIMIT  10;
+
+-- Q14: Productos sin nombre de categoría traducido al inglés
+SELECT p.product_id, p.product_category_name
+FROM   olist_products_dataset p
+LEFT   JOIN product_category_name_translation t
+       ON p.product_category_name = t.product_category_name
+WHERE  t.product_category_name_english IS NULL
+LIMIT  10;
+
+-- Q15: Top 10 vendedores por cantidad de artículos vendidos
+SELECT s.seller_id, s.seller_city, COUNT(*) AS items_sold
+FROM   olist_sellers_dataset s
+JOIN   olist_order_items_dataset oi ON s.seller_id = oi.seller_id
+GROUP  BY s.seller_id, s.seller_city
+ORDER  BY items_sold DESC
+LIMIT  10;</pre>
+    <div class="callout"><strong>Entregable A:</strong> un archivo llamado <code>L02-queries-&lt;apellido&gt;.sql</code> con las 15 consultas y un comentario encima de cada una.</div>
+  </section>
+
+  <section>
+    <h2>7. Laboratorio B — Pipeline SQL</h2>
+    <p>Responde esta pregunta con SQL: <strong>¿Quiénes son los 10 clientes que generan más ingresos y cuál es la categoría que más compran?</strong> En L03 utilizarás el CSV resultante para construir el informe en Power BI.</p>
+
+    <h3>Paso 1 — Calcular ingresos por cliente</h3>
+    <p>Usa <code>customer_unique_id</code> para representar al cliente real y suma el precio más el flete de sus artículos.</p>
+    <pre>WITH customer_revenue AS (
+  SELECT c.customer_unique_id, c.customer_state,
+         SUM(oi.price + oi.freight_value) AS revenue
+  FROM   olist_customers_dataset c
+  JOIN   olist_orders_dataset o ON c.customer_id = o.customer_id
+  JOIN   olist_order_items_dataset oi ON o.order_id = oi.order_id
+  GROUP  BY c.customer_unique_id, c.customer_state
+),
+top10 AS (
+  SELECT customer_unique_id, customer_state, revenue
+  FROM   customer_revenue
+  ORDER  BY revenue DESC
+  LIMIT  10
+),
+top_category_per_customer AS (
+  SELECT c.customer_unique_id,
+         COALESCE(t.product_category_name_english,
+                  p.product_category_name) AS category,
+         SUM(oi.price) AS category_spend,
+         ROW_NUMBER() OVER (
+           PARTITION BY c.customer_unique_id
+           ORDER BY SUM(oi.price) DESC
+         ) AS rn
+  FROM   olist_customers_dataset c
+  JOIN   olist_orders_dataset o ON c.customer_id = o.customer_id
+  JOIN   olist_order_items_dataset oi ON o.order_id = oi.order_id
+  JOIN   olist_products_dataset p ON oi.product_id = p.product_id
+  LEFT   JOIN product_category_name_translation t
+         ON p.product_category_name = t.product_category_name
+  WHERE  c.customer_unique_id IN
+         (SELECT customer_unique_id FROM top10)
+  GROUP  BY c.customer_unique_id, category
+)
+SELECT t10.customer_unique_id, t10.customer_state, t10.revenue,
+       tc.category AS top_category
+FROM   top10 t10
+JOIN   top_category_per_customer tc
+       ON t10.customer_unique_id = tc.customer_unique_id
+      AND tc.rn = 1
+ORDER  BY t10.revenue DESC;</pre>
+    <div class="callout warning"><strong>Clave:</strong> <code>customer_id</code> puede repetirse entre órdenes asociadas a una misma persona. Para una respuesta “por cliente”, agrupa con <code>customer_unique_id</code>.</div>
+
+    <h3>Paso 2 — Validar y exportar a CSV</h3>
+    <ol>
+      <li>Ejecuta la consulta y verifica que devuelva 10 clientes.</li>
+      <li>Confirma que los ingresos estén ordenados de mayor a menor y que cada cliente tenga una categoría principal.</li>
+      <li>En el panel de resultados de Supabase, selecciona <strong>Download CSV</strong>.</li>
+      <li>Guarda el archivo como <code>L02-top-customers.csv</code>.</li>
+    </ol>
+
+    <div class="callout"><strong>Entregable B:</strong> el archivo <code>L02-top-customers.csv</code>, que será la entrada del laboratorio de Power BI en L03.</div>
+  </section>
+
+  <section>
+    <h2>8. Entrega y reflexión</h2>
+    <p>Entrega ambos archivos antes de salir:</p>
+    <ol>
+      <li><code>L02-queries-&lt;apellido&gt;.sql</code> con las 15 consultas.</li>
+      <li><code>L02-top-customers.csv</code> con el resultado final de la consulta.</li>
+    </ol>
+    <p>Incluye una reflexión breve de 150–200 palabras que responda:</p>
+    <ul>
+      <li>¿Qué cliente o estado aparece con mayor ingreso?</li>
+      <li>¿Qué categoría aparece con mayor frecuencia o gasto entre los clientes principales?</li>
+      <li>¿Qué decisión podría apoyar este resultado y cómo lo visualizarías en L03?</li>
+      <li>¿Qué limitación debes considerar antes de tomar una decisión?</li>
+    </ul>
+    <div class="callout warning"><strong>No confundas:</strong> una asociación o ranking descriptivo no demuestra que una categoría cause mayor valor ni que una acción específica produzca más ingresos.</div>
+  </section>
+
+  <section>
+    <h2>9. Cierre y próximo paso</h2>
+    <p>Presenta tu resultado con esta estructura:</p>
+    <p><strong>“Investigamos ___ usando ___. Encontramos ___. Esto podría apoyar ___. Sin embargo, debemos considerar ___.”</strong></p>
+    <p>Para la próxima sesión, completa cualquier consulta pendiente, escribe una consulta nueva sobre una pregunta de negocio propia y conserva el CSV para el laboratorio de Power BI de L03.</p>
+  </section>
+
+  <footer>
+    Fuente de datos: <a href="https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce">Olist Brazilian E-Commerce en Kaggle</a>, licencia CC0.
+    · Supabase: https://supabase.com/
+  </footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UAGM-ITMA501 · Lecture 02 · Speaker Notes</title>
+<style>
+  :root { --ink:#0A2540; --muted:#5B7A99; --bg:#F4F8FC; --card:#fff; --line:#DCE7F2; --blue:#2E6BB8; --teal:#14B8C4; --soft:#E8F1F8; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif; color:var(--ink); background:var(--bg); line-height:1.6; }
+  main { max-width:1050px; margin:0 auto; padding:48px 28px 80px; }
+  header { padding:34px; background:linear-gradient(145deg,#DCE9F4,#fff); border:1px solid var(--line); border-radius:18px; margin-bottom:28px; }
+  .eyebrow { color:var(--teal); font-size:12px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
+  h1 { margin:8px 0 10px; font-size:clamp(30px,5vw,52px); line-height:1.08; }
+  h2 { margin:0 0 10px; font-size:27px; }
+  h3 { margin:24px 0 6px; font-size:20px; color:var(--blue); }
+  p { margin:8px 0 14px; }
+  .lede { color:var(--muted); max-width:800px; font-size:17px; }
+  .meta { display:flex; flex-wrap:wrap; gap:18px; color:var(--muted); font-size:14px; margin-top:20px; }
+  section { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:25px 28px; margin:18px 0; box-shadow:0 5px 18px rgba(10,37,64,.05); }
+  .slide-label { display:inline-block; color:var(--teal); font-size:11px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
+  .timing { float:right; color:var(--muted); font-size:13px; font-weight:600; }
+  ul,ol { padding-left:23px; }
+  li { margin:6px 0; }
+  .prompt { border-left:4px solid var(--teal); background:#ECFDF5; padding:13px 17px; margin:16px 0; }
+  .watch { border-left:4px solid #F59E0B; background:#FFFBEB; padding:13px 17px; margin:16px 0; }
+  code { background:var(--soft); border-radius:5px; padding:2px 5px; }
+  pre { overflow:auto; background:#0A2540; color:#F4F8FC; padding:14px 16px; border-radius:9px; font-size:13px; }
+  .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+  .card { border:1px solid var(--line); border-radius:12px; padding:16px; }
+  .card h4 { margin:0 0 5px; color:var(--blue); }
+  table { width:100%; border-collapse:collapse; margin:15px 0; font-size:14px; }
+  th,td { text-align:left; vertical-align:top; padding:10px 12px; border-bottom:1px solid var(--line); }
+  th { background:var(--soft); color:var(--blue); }
+  footer { color:var(--muted); font-size:13px; margin-top:28px; }
+  @media (max-width:700px) { main { padding:22px 14px 50px; } section,header { padding:20px; } .grid { grid-template-columns:1fr; } .timing { float:none; display:block; margin-top:4px; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">Instructor guide · L02 · Units U3.1–U3.6</div>
+    <h1>Relational Data and SQL, End-to-End</h1>
+    <p class="lede">A practical speaking structure for moving from a relational database to an exported, decision-ready SQL result using the Olist Brazilian e-commerce dataset. Power BI reporting continues in L03.</p>
+    <div class="meta">
+      <span><strong>Theory:</strong> 120 min</span>
+      <span><strong>Lab:</strong> 120 min</span>
+      <span><strong>Break:</strong> 15 min</span>
+      <span><strong>Platform:</strong> Supabase SQL Editor</span>
+      <span><strong>Dataset:</strong> Olist</span>
+    </div>
+  </header>
+
+  <section>
+    <span class="slide-label">Before class</span>
+    <h2>Instructor setup</h2>
+    <ul>
+      <li>Ingest all nine Olist CSV files into an instructor Supabase project and verify the table names and row counts.</li>
+      <li>Distribute <code>L02-olist-ingest.sql</code> and an Olist ER diagram through the LMS.</li>
+      <li>Test the 15 practice queries and the Lab B top-customer query before class.</li>
+      <li>Prepare a fallback CSV or a pre-populated database in case student ingestion fails.</li>
+      <li>Save an instructor copy of the Lab B result as <code>L02-top-customers.csv</code> for the L03 Power BI lab.</li>
+    </ul>
+  </section>
+
+  <section>
+    <span class="slide-label">Self-guided setup · Olist ingestion</span>
+    <h2>Upload the nine CSV files to Supabase</h2>
+    <p>Students who miss the live ingestion walkthrough can load Olist through the Supabase Table Editor. The source files are available from the <a href="https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce">Olist Brazilian E-Commerce page on Kaggle</a>.</p>
+    <ol>
+      <li>Download the Kaggle dataset and extract the ZIP file. Keep the nine files ending in <code>_dataset.csv</code>, plus <code>product_category_name_translation.csv</code>.</li>
+      <li>Open the Supabase project, select <strong>Table Editor</strong>, and choose <strong>New table</strong> or <strong>Import data from CSV</strong>.</li>
+      <li>For each CSV, create a table using the filename without <code>.csv</code> as the table name. For example, <code>olist_orders_dataset.csv</code> becomes <code>olist_orders_dataset</code>.</li>
+      <li>Enable the option that treats the first row as column headers. Keep the delimiter as comma and encoding as UTF-8.</li>
+      <li>Review the inferred column types before importing. Keep IDs and ZIP prefixes as text; use numeric types for prices, freight, review scores, and counts; use text for raw timestamp columns.</li>
+      <li>Import one file at a time. Do not rename the columns or tables, because the practice queries depend on the names shown in the ER diagram.</li>
+      <li>Repeat the process for all nine tables. The geolocation file is much larger than the others and may take longer to import.</li>
+    </ol>
+    <table>
+      <tr><th>CSV file</th><th>Table name</th><th>Primary relationship</th></tr>
+      <tr><td><code>olist_customers_dataset.csv</code></td><td><code>olist_customers_dataset</code></td><td>Customer records; <code>customer_id</code> joins to orders.</td></tr>
+      <tr><td><code>olist_orders_dataset.csv</code></td><td><code>olist_orders_dataset</code></td><td>Orders; <code>order_id</code> joins to items and reviews.</td></tr>
+      <tr><td><code>olist_order_items_dataset.csv</code></td><td><code>olist_order_items_dataset</code></td><td>Items; joins orders, products, and sellers.</td></tr>
+      <tr><td><code>olist_products_dataset.csv</code></td><td><code>olist_products_dataset</code></td><td>Products; <code>product_id</code> joins to items.</td></tr>
+      <tr><td><code>olist_sellers_dataset.csv</code></td><td><code>olist_sellers_dataset</code></td><td>Sellers; <code>seller_id</code> joins to items.</td></tr>
+      <tr><td><code>olist_order_payments_dataset.csv</code></td><td><code>olist_order_payments_dataset</code></td><td>Payments; <code>order_id</code> joins to orders.</td></tr>
+      <tr><td><code>olist_order_reviews_dataset.csv</code></td><td><code>olist_order_reviews_dataset</code></td><td>Reviews; <code>order_id</code> joins to orders.</td></tr>
+      <tr><td><code>olist_geolocation_dataset.csv</code></td><td><code>olist_geolocation_dataset</code></td><td>ZIP-prefix location lookup.</td></tr>
+      <tr><td><code>product_category_name_translation.csv</code></td><td><code>product_category_name_translation</code></td><td>Portuguese-to-English category lookup.</td></tr>
+    </table>
+    <h3>Verify the import</h3>
+    <p>Run a row-count query for each table. A successful import should return approximately 99,441 customers, 99,441 orders, 112,650 order items, 32,951 products, 3,095 sellers, 103,886 payments, 99,224 reviews, 1,000,163 geolocation rows, and 71 translations.</p>
+    <pre>SELECT 'customers' AS table_name, COUNT(*) FROM olist_customers_dataset
+UNION ALL
+SELECT 'orders', COUNT(*) FROM olist_orders_dataset
+UNION ALL
+SELECT 'order_items', COUNT(*) FROM olist_order_items_dataset
+UNION ALL
+SELECT 'products', COUNT(*) FROM olist_products_dataset
+UNION ALL
+SELECT 'sellers', COUNT(*) FROM olist_sellers_dataset
+UNION ALL
+SELECT 'payments', COUNT(*) FROM olist_order_payments_dataset
+UNION ALL
+SELECT 'reviews', COUNT(*) FROM olist_order_reviews_dataset
+UNION ALL
+SELECT 'geolocation', COUNT(*) FROM olist_geolocation_dataset
+UNION ALL
+SELECT 'translations', COUNT(*) FROM product_category_name_translation;</pre>
+    <div class="watch"><strong>Fallback:</strong> if the Table Editor import fails, use the instructor-provided <code>L02-olist-ingest.sql</code> script or pair with a student whose project is already loaded. Never paste the entire CSV into the SQL Editor.</div>
+  </section>
+
+  <section>
+    <span class="slide-label">Slide 1 · Title</span><span class="timing">3–5 min</span>
+    <h2>Frame SQL as a decision pipeline</h2>
+    <p>Open with the promise: students will begin with an empty database and finish with a report answering a business question. Emphasize that SQL is not isolated syntax; it is the bridge between stored data and decisions.</p>
+    <div class="prompt"><strong>Ask:</strong> “If an e-commerce company wanted to identify its most valuable customers, what information would it need to combine?” Listen for customers, orders, items, prices, and products.</div>
+    <p>Preview the full path: Supabase stores the tables, SQL selects and combines evidence, CSV carries the result, and Power BI communicates it.</p>
+  </section>
+
+  <section>
+    <span class="slide-label">Slide 2 · Agenda</span><span class="timing">5 min</span>
+    <h2>Give students the map</h2>
+    <p>Walk through the session blocks and explain the progression:</p>
+    <ol>
+      <li>Meet the data and understand relational structure.</li>
+      <li>Write basic queries and summaries.</li>
+      <li>Combine tables with joins.</li>
+      <li>Practice 15 queries.</li>
+      <li>Build an end-to-end report.</li>
+    </ol>
+    <p>Set the expectation that students should type along. The objective is not to watch a polished demo; it is to develop a repeatable workflow.</p>
+  </section>
+
+  <section>
+    <span class="slide-label">Slide 3 · Meet Olist</span><span class="timing">10 min</span>
+    <h2>Make the schema concrete before teaching syntax</h2>
+    <p>Introduce Olist as a public-domain Brazilian marketplace dataset with approximately 100,000 orders from 2016–2018. Explain that the nine CSV files represent different business entities and events.</p>
+    <p><strong>Data location:</strong> students can download the dataset from the <a href="https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce">Olist Brazilian E-Commerce page on Kaggle</a>. The download contains the nine CSV files used in this session.</p>
+    <table>
+      <tr><th>Table</th><th>Use it to discuss</th></tr>
+      <tr><td><code>olist_customers_dataset</code></td><td>Customer identity, location, and the difference between <code>customer_id</code> and <code>customer_unique_id</code>.</td></tr>
+      <tr><td><code>olist_orders_dataset</code></td><td>Order status and timestamps.</td></tr>
+      <tr><td><code>olist_order_items_dataset</code></td><td>Products, sellers, prices, and freight at item level.</td></tr>
+      <tr><td><code>olist_products_dataset</code></td><td>Product attributes and categories.</td></tr>
+      <tr><td>Payments, reviews, sellers, geolocation, translation</td><td>Additional facts and lookup information joined through keys.</td></tr>
+    </table>
+    <p>Show the ER diagram and trace one order from customer to items, products, seller, payment, and review.</p>
+    <div class="prompt"><strong>Teaching line:</strong> “You will use this same dataset again in L04–L07. Familiarity with the tables is an analytical advantage.”</div>
+  </section>
+
+  <section>
+    <span class="slide-label">Slide 4 · SELECT / WHERE</span><span class="timing">20 min</span>
+    <h2>Teach the query in execution order</h2>
+    <p>Explain that SQL is typed as <code>SELECT ... FROM ... WHERE ...</code>, but the database conceptually starts with <code>FROM</code>, filters with <code>WHERE</code>, and returns columns with <code>SELECT</code>.</p>
+    <pre>SELECT customer_id, customer_city, customer_state
+FROM   olist_customers_dataset
+WHERE  customer_state = 'SP'
+LIMIT  10;</pre>
+    <p>Walk through comparison operators: <code>=</code>, <code>&lt;&gt;</code>, inequalities, <code>IN</code>, <code>BETWEEN</code>, <code>LIKE</code>, and null checks.</p>
+    <div class="watch"><strong>Trap:</strong> <code>WHERE column = NULL</code> does not find missing values. Use <code>IS NULL</code> or <code>IS NOT NULL</code>.</div>
+    <p>Live-code a query for São Paulo orders and one for canceled orders. Mention that Olist city values are lowercase and Portuguese, so exact text and case matter.</p>
+    <div class="prompt"><strong>Check understanding:</strong> ask students to predict whether a query using <code>customer_state IN ('SP','RJ','MG')</code> returns rows or errors before running it.</div>
+  </section>
+
+  <section>
+    <span class="slide-label">Slide 5 · Aggregates</span><span class="timing">20 min</span>
+    <h2>Move from individual rows to business summaries</h2>
+    <p>Introduce <code>COUNT</code>, <code>SUM</code>, <code>AVG</code>, <code>MIN</code>, and <code>MAX</code>. Connect each function to a business question: how many orders, how much revenue, what average price, and what range?</p>
+    <pre>SELECT c.customer_state,
+       SUM(oi.price + oi.freight_value) AS revenue
+FROM   olist_order_items_dataset oi
+JOIN   olist_orders_dataset o ON oi.order_id = o.order_id
+JOIN   olist_customers_dataset c ON o.customer_id = c.customer_id
+GROUP BY c.customer_state
+ORDER BY revenue DESC
+LIMIT 10;</pre>
+    <p>Anchor the rule: every selected column not inside an aggregate must appear in <code>GROUP BY</code>. Then distinguish <code>WHERE</code>, which filters rows before grouping, from <code>HAVING</code>, which filters groups after aggregation.</p>
+    <div class="prompt"><strong>Ask:</strong> “Would you use WHERE or HAVING to keep only states with more than 1,000 orders?” Require students to explain why.</div>
+  </section>
+
+  <section>
+    <span class="slide-label">Slide 6 · Relational algebra</span><span class="timing">10 min</span>
+    <h2>Give complex queries a mental model</h2>
+    <p>Present relational algebra as a debugging tool rather than a theory exam:</p>
+    <div class="grid">
+      <div class="card"><h4>Projection (π)</h4><p>Choose columns with <code>SELECT</code>.</p></div>
+      <div class="card"><h4>Selection (σ)</h4><p>Choose rows with <code>WHERE</code>.</p></div>
+      <div class="card"><h4>Join (⋈)</h4><p>Combine tables on matching keys with <code>JOIN</code>.</p></div>
+      <div class="card"><h4>Union (∪)</h4><p>Combine compatible result sets with <code>UNION</code>.</p></div>
+    </div>
+    <p>Explain that a five-table query is a composition of small operations. When results are wrong, inspect one layer at a time instead of staring at the whole query.</p>
+  </section>
+
+  <section>
+    <span class="slide-label">Slide 7 · JOINs</span><span class="timing">25 min</span>
+    <h2>Make row preservation visible</h2>
+    <p>Draw the four join types and say the defining sentence for each:</p>
+    <ul>
+      <li><strong>INNER JOIN:</strong> only matching rows from both tables.</li>
+      <li><strong>LEFT JOIN:</strong> every row from the left table plus matches from the right.</li>
+      <li><strong>RIGHT JOIN:</strong> every row from the right table plus matches from the left.</li>
+      <li><strong>FULL OUTER JOIN:</strong> every row from both tables, with nulls where no match exists.</li>
+    </ul>
+    <p>Use row counts to demonstrate the difference. Then build the five-table query one join at a time: orders plus customers, add items, add products, and finally add translated categories.</p>
+    <div class="watch"><strong>Common failures:</strong> a missing <code>ON</code> clause creates a Cartesian product; unqualified column names become ambiguous; an inner join can unintentionally discard unmatched records.</div>
+    <p>Explain why the translation table uses <code>LEFT JOIN</code> and why <code>COALESCE</code> preserves a Portuguese category when no English translation exists.</p>
+  </section>
+
+  <section>
+    <span class="slide-label">Slide 8–9 · Build and export</span><span class="timing">20 min</span>
+    <h2>Show the SQL pipeline and stop at the CSV</h2>
+    <p>Build the anchor query incrementally and pause after each join to inspect the result. Then demonstrate the export path:</p>
+    <ol>
+      <li>Run the query in the Supabase SQL Editor.</li>
+      <li>Use the result panel’s <strong>Download CSV</strong> action.</li>
+      <li>Save with a descriptive name such as <code>L02-top-customers.csv</code>.</li>
+      <li>Keep the CSV available for L03.</li>
+    </ol>
+    <p>Tell students that today's target is a reliable handoff from database query to a reusable CSV. L03 will turn that result into a Power BI report.</p>
+    <div class="prompt"><strong>Bridge:</strong> “The query is the analytical work. Next session we will decide how to make its result clear and useful to a reader.”</div>
+  </section>
+
+  <section>
+    <span class="slide-label">Lab · Block 03</span><span class="timing">55 min</span>
+    <h2>Coach the 15-query progression</h2>
+    <p>Have students attempt each query before projecting the solution. Keep the progression visible: five basic filters, three operators, four aggregate queries, and three join warmups.</p>
+    <table>
+      <tr><th>Queries</th><th>Focus</th><th>Instructor emphasis</th></tr>
+      <tr><td>Q1–Q5</td><td><code>SELECT</code>, <code>WHERE</code>, <code>LIMIT</code>, <code>DISTINCT</code></td><td>Read the returned rows and verify text values.</td></tr>
+      <tr><td>Q6–Q8</td><td><code>LIKE</code>, <code>IN</code>, <code>BETWEEN</code></td><td>Operators express business filters precisely.</td></tr>
+      <tr><td>Q9–Q12</td><td>Aggregates, <code>GROUP BY</code>, <code>HAVING</code></td><td>Check the grain and denominator of each result.</td></tr>
+      <tr><td>Q13–Q15</td><td>Inner and left joins</td><td>Explain which table’s rows are preserved.</td></tr>
+    </table>
+    <p>Circulate for syntax errors, but ask students to identify which clause is failing before supplying a correction.</p>
+  </section>
+
+  <section>
+    <span class="slide-label">Lab · Block 04</span><span class="timing">60 min</span>
+    <h2>Guide the top-customer SQL result</h2>
+    <p>The business question is: <strong>Who are Olist’s top 10 revenue-generating customers, and which product category do they buy most from?</strong></p>
+    <ol>
+      <li>Start with customer revenue, grouping by <code>customer_unique_id</code>, not the per-order <code>customer_id</code>.</li>
+      <li>Limit that result to the top 10 customers.</li>
+      <li>Calculate category spend for those customers.</li>
+      <li>Use <code>ROW_NUMBER()</code> or a simpler second query to select each customer’s top category.</li>
+      <li>Export the final result as <code>L02-top-customers.csv</code> for the L03 Power BI lab.</li>
+    </ol>
+    <div class="watch"><strong>Olist gotcha:</strong> <code>customer_id</code> identifies a customer record associated with an order; <code>customer_unique_id</code> is the correct field for aggregating the real customer across orders.</div>
+    <p>For students who struggle with the CTE, provide the two-query fallback. Preserve the business question and the final CSV even if the implementation is simpler.</p>
+  </section>
+
+  <section>
+    <span class="slide-label">Close · Debrief</span><span class="timing">15 min</span>
+    <h2>End with a reusable communication pattern</h2>
+    <p>Ask each group to report in this order: <strong>question → method → result → limitation → action or next question</strong>.</p>
+    <div class="prompt"><strong>Final bridge:</strong> “You can now retrieve decision-ready evidence from connected tables. Next session asks where data comes from and how to assess it before analysis.”</div>
+    <p>Assign the unfinished queries, one novel business question, and the L03 Power BI preparation.</p>
+  </section>
+
+  <footer>
+    Dataset source: Olist Brazilian E-Commerce, Kaggle, CC0.
+    Olist data: <a href="https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce">Kaggle download page</a>
+    · Supabase: https://supabase.com/
+  </footer>
+</main>
+</body>
+</html>
