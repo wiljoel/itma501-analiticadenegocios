@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UAGM-ITMA501 · Lecture 04 · Dashboarding Principles and Power BI</title>
+<style>
+  :root { --bg:#E8F1F8; --soft:#DCE9F4; --text:#0A2540; --muted:#5B7A99; --teal:#14B8C4; --blue:#2E6BB8; --card:#fff; --mint:#ECFDF5; --amber:#FFFBEB; --rose:#FEF2F2; }
+  * { box-sizing:border-box; } body { margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif; color:var(--text); background:var(--bg); overflow:hidden; }
+  .deck { position:relative; width:100vw; height:100vh; } .slide { position:absolute; inset:0; display:none; padding:64px 80px 108px; overflow:auto; } .slide.active { display:block; }
+  .inner { max-width:1180px; min-height:100%; margin:0 auto; display:flex; flex-direction:column; justify-content:center; }
+  .center { text-align:center; } .eyebrow { color:var(--teal); font-size:13px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; margin-bottom:18px; }
+  h1 { font-size:clamp(38px,5vw,68px); line-height:1.05; margin:0 0 18px; } h2 { font-size:clamp(28px,3.5vw,46px); line-height:1.1; margin:0 0 14px; } h3 { margin:0 0 8px; }
+  .lede { max-width:850px; margin:0 auto; color:var(--muted); font-size:18px; line-height:1.55; }
+  .meta { display:flex; flex-wrap:wrap; gap:30px; justify-content:center; margin-top:30px; color:var(--muted); } .meta strong { color:var(--text); }
+  .grid { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:34px; } .grid-2 { display:grid; grid-template-columns:repeat(2,1fr); gap:22px; margin-top:30px; }
+  .card,.lab { background:var(--card); border-radius:16px; padding:22px; box-shadow:0 8px 24px rgba(10,37,64,.07); text-align:left; } .tag { color:var(--blue); font-size:11px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; } .card h3,.lab h3 { margin:8px 0; } .card p,.lab p,.lab li { font-size:14px; line-height:1.5; }
+  .callout { margin-top:24px; padding:16px 20px; border-left:4px solid var(--teal); background:var(--mint); text-align:left; } .warning { border-left-color:#F59E0B; background:var(--amber); } .rose { border-left-color:#F87171; background:var(--rose); }
+  table { width:100%; border-collapse:collapse; margin-top:25px; background:var(--card); font-size:14px; } th,td { text-align:left; padding:11px 13px; border-bottom:1px solid #DCE7F2; } th { background:var(--soft); color:var(--blue); }
+  code { background:rgba(10,37,64,.08); padding:2px 5px; border-radius:4px; } ol { text-align:left; line-height:1.6; } li { margin:5px 0; }
+  .chrome { position:fixed; bottom:0; left:0; right:0; display:flex; justify-content:space-between; align-items:center; padding:14px 24px; background:linear-gradient(to top,var(--bg) 65%,transparent); } button { border:0; cursor:pointer; } .nav { width:42px; height:42px; border-radius:50%; background:white; color:var(--text); font-size:22px; box-shadow:0 4px 15px rgba(10,37,64,.12); } .pager { color:var(--muted); font-size:13px; }
+  @media (max-width:900px) { .slide { padding:38px 20px 90px; } .grid,.grid-2 { grid-template-columns:1fr; } } @media print { body { overflow:visible; background:white; } .deck { height:auto; } .slide { display:block; position:relative; min-height:100vh; page-break-after:always; } .chrome { display:none; } }
+</style>
+</head>
+<body>
+<div class="deck">
+  <section class="slide active"><div class="inner center">
+    <div class="eyebrow">Description · Session 04 of 08</div><h1>Dashboarding Principles &amp; Power BI</h1>
+    <p class="lede">Choose the right visual, organize a useful dashboard, and translate evidence into a business answer.</p>
+    <div class="meta"><span><strong>Data</strong> Olist in Supabase</span><span><strong>Duration</strong> 4.5 hours</span><span><strong>Output</strong> Power BI dashboard + decision brief</span></div>
+  </div></section>
+
+  <section class="slide"><div class="inner center">
+    <div class="eyebrow">Today's session</div><h2>Question → Visual → Answer → Action</h2>
+    <p class="lede">A dashboard is not a collection of charts. It is a decision tool for a specific audience.</p>
+    <div class="grid">
+      <div class="card"><div class="tag">Block 01</div><h3>Frame the question</h3><p>Who needs to decide what?</p></div>
+      <div class="card"><div class="tag">Block 02</div><h3>Choose the visual</h3><p>Match chart to data shape.</p></div>
+      <div class="card"><div class="tag">Block 03</div><h3>Build in Power BI</h3><p>Connect, model, format, interact.</p></div>
+      <div class="card"><div class="tag">Block 04</div><h3>Explain the evidence</h3><p>Finding, action, limitation.</p></div>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <div class="eyebrow">Part 01 · Business questions</div><h2>Start with the decision, not the chart.</h2>
+    <div class="grid-2">
+      <div class="card"><div class="tag">Executive</div><h3>Are results healthy?</h3><p>Use KPI cards and a trend to show status and direction.</p></div>
+      <div class="card"><div class="tag">Manager</div><h3>Where should we focus?</h3><p>Use ranked bars, a matrix, and filters to identify segments that need attention.</p></div>
+      <div class="card"><div class="tag">Analyst</div><h3>Why is this happening?</h3><p>Use distributions, relationships, and drill-through pages to investigate.</p></div>
+      <div class="card"><div class="tag">Translation chain</div><h3>Question → measure → visual → action</h3><p>Example: “Which markets need attention?” becomes revenue and orders by state, then a ranked bar chart and a follow-up investigation.</p></div>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <div class="eyebrow">Part 02 · Chart selection</div><h2>Choose the visual that answers the question.</h2>
+    <table><tr><th>Question</th><th>Visual</th><th>Olist example</th></tr>
+      <tr><td>Compare categories</td><td>Bar / column</td><td>Revenue by state or category</td></tr>
+      <tr><td>Show change over time</td><td>Line</td><td>Orders by month</td></tr>
+      <tr><td>Show composition</td><td>100% stacked bar / treemap</td><td>Status mix by state</td></tr>
+      <tr><td>Show a distribution</td><td>Histogram / box plot</td><td>Review scores or prices</td></tr>
+      <tr><td>Show a relationship</td><td>Scatter</td><td>Price versus freight</td></tr>
+      <tr><td>Show two categorical dimensions</td><td>Matrix / heatmap</td><td>State by order status</td></tr>
+      <tr><td>Show one headline value</td><td>Card / KPI</td><td>Gross revenue or order count</td></tr>
+    </table>
+  </div></section>
+
+  <section class="slide"><div class="inner center">
+    <div class="eyebrow">Part 02 · Chart selection</div><h2>Useful rules. Dangerous shortcuts.</h2>
+    <div class="grid">
+      <div class="card"><h3>Bars</h3><p>Sort them. Use them for comparison.</p></div>
+      <div class="card"><h3>Lines</h3><p>Use ordered time on the x-axis.</p></div>
+      <div class="card"><h3>Tables</h3><p>Use when exact lookup matters.</p></div>
+      <div class="card"><h3>Maps</h3><p>Use only when geography changes the decision.</p></div>
+    </div>
+    <div class="callout rose"><strong>Avoid:</strong> 3D charts, decorative rainbow colors, unsorted bars, unexplained dual axes, and truncated bar-chart axes.</div>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <div class="eyebrow">Part 03 · Dashboard design</div><h2>Build a visual hierarchy.</h2>
+    <div class="grid-2">
+      <div class="card"><div class="tag">Top</div><h3>Context and KPIs</h3><p>Title, audience, date range, and a small number of high-signal cards.</p></div>
+      <div class="card"><div class="tag">Middle</div><h3>Main answer</h3><p>One comparison or trend visual should carry the page's primary story.</p></div>
+      <div class="card"><div class="tag">Bottom</div><h3>Diagnosis</h3><p>Matrix, detail table, or supporting chart for the next question.</p></div>
+      <div class="card"><div class="tag">Everywhere</div><h3>Clarity</h3><p>Aligned edges, whitespace, explicit titles, readable units, restrained color.</p></div>
+    </div>
+    <div class="callout"><strong>KPI anatomy:</strong> metric + target + threshold + owner + cadence. A number without context is a metric, not a KPI.</div>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <div class="eyebrow">Part 04 · Power BI introduction</div><h2>Connect. Model. Build. Interact. Explain.</h2>
+    <ol>
+      <li><strong>Get Data:</strong> choose PostgreSQL and connect to the Supabase project from L02.</li>
+      <li><strong>Model:</strong> inspect tables, relationships, data types, and grain.</li>
+      <li><strong>Build:</strong> drag fields into visual wells.</li>
+      <li><strong>Format:</strong> set titles, currency, labels, colors, and axes.</li>
+      <li><strong>Interact:</strong> add a slicer and test cross-filtering.</li>
+      <li><strong>Save:</strong> keep the `.pbix` connected to the student's project.</li>
+    </ol>
+    <div class="callout warning"><strong>Aggregation check:</strong> item-level price summed across items is not the same as counting orders. Always state the grain of the number.</div>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <div class="eyebrow">Lab · Olist dashboard</div><h2>Build the page in layers.</h2>
+    <div class="lab"><ol>
+      <li>Connect to Supabase and load the Olist tables.</li>
+      <li>Create cards for total orders, gross revenue, and average review score.</li>
+      <li>Add a sorted bar chart for revenue by state.</li>
+      <li>Add a line chart for monthly orders or revenue.</li>
+      <li>Add a matrix for state by order status.</li>
+      <li>Add one slicer and test cross-filtering.</li>
+      <li>Add a title and a text box naming the audience and decision.</li>
+    </ol></div>
+    <div class="callout"><strong>Do not decorate first.</strong> Verify the numbers against SQL, then format the page.</div>
+  </div></section>
+
+  <section class="slide"><div class="inner center">
+    <div class="eyebrow">Lab · Interpretation</div><h2>Turn visuals into business answers.</h2>
+    <div class="grid">
+      <div class="card"><h3>Evidence</h3><p>What exactly does the visual show?</p></div>
+      <div class="card"><h3>Interpretation</h3><p>What might the pattern mean?</p></div>
+      <div class="card"><h3>Action</h3><p>What could someone do next?</p></div>
+      <div class="card"><h3>Limit</h3><p>What does the dashboard not prove?</p></div>
+    </div>
+    <div class="callout"><strong>Example:</strong> “SP has the highest revenue in this dataset. That suggests it deserves follow-up analysis, but it does not prove that expanding there will cause future revenue to increase.”</div>
+  </div></section>
+
+  <section class="slide"><div class="inner center">
+    <div class="eyebrow">Close</div><h2>Ship a decision-ready page.</h2>
+    <p class="lede">Save `L04-olist-dashboard-&lt;lastname&gt;.pbix` and submit a one-page decision brief with three findings, one next step, and one limitation.</p>
+    <div class="callout"><strong>Bridge to L05:</strong> dashboards summarize what happened and where to look. Next we examine patterns in transactions and reviews.</div>
+  </div></section>
+</div>
+<div class="chrome"><button class="nav" id="prev">‹</button><span class="pager" id="pager"></span><button class="nav" id="next">›</button></div>
+<script>
+  (() => { const slides=[...document.querySelectorAll('.slide')], prev=document.getElementById('prev'), next=document.getElementById('next'), pager=document.getElementById('pager'); let i=0;
+    const go=n=>{i=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,j)=>s.classList.toggle('active',i===j));pager.textContent=`${i+1} / ${slides.length}`;prev.disabled=i===0;next.disabled=i===slides.length-1;};
+    prev.onclick=()=>go(i-1); next.onclick=()=>go(i+1); document.onkeydown=e=>{if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' ')go(i+1);if(e.key==='ArrowLeft'||e.key==='PageUp')go(i-1);}; go(0);
+  })();
+</script>
+</body>
+</html>

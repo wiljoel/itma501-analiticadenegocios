@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UAGM-ITMA501 · L02 · SQL Fundamentals with Retail Data</title>
+<style>
+  :root { --ink:#0A2540; --muted:#5B7A99; --bg:#F4F8FC; --card:#fff; --line:#DCE7F2; --blue:#2E6BB8; --teal:#14B8C4; --soft:#E8F1F8; --green:#ECFDF5; --amber:#FFFBEB; }
+  * { box-sizing:border-box; } body { margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif; color:var(--ink); background:var(--bg); line-height:1.6; } main { max-width:1050px; margin:0 auto; padding:42px 26px 75px; }
+  header { background:linear-gradient(145deg,#DCE9F4,#fff); border:1px solid var(--line); border-radius:18px; padding:32px; margin-bottom:22px; } .eyebrow { color:var(--teal); font-size:12px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; } h1 { margin:8px 0 10px; font-size:clamp(30px,5vw,52px); line-height:1.1; } h2 { margin:0 0 10px; font-size:27px; color:var(--blue); } p { margin:8px 0 14px; } .lede { max-width:820px; color:var(--muted); font-size:17px; } .meta { display:flex; flex-wrap:wrap; gap:18px; color:var(--muted); font-size:14px; margin-top:18px; }
+  section { background:var(--card); border:1px solid var(--line); border-radius:15px; padding:24px 28px; margin:16px 0; box-shadow:0 5px 18px rgba(10,37,64,.05); } ol { padding-left:25px; } li { margin:9px 0; } .callout { padding:14px 17px; margin:16px 0; border-left:4px solid var(--teal); background:var(--green); } .warning { border-left-color:#F59E0B; background:var(--amber); } code { background:var(--soft); padding:2px 5px; border-radius:5px; }
+  footer { color:var(--muted); font-size:13px; margin-top:24px; } @media (max-width:700px) { main { padding:20px 14px 50px; } section,header { padding:20px; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">UAGM-ITMA501 · L02 · Laboratorio</div>
+    <h1>SQL Fundamentals with Retail Data</h1>
+    <p class="lede">Construye y consulta una base de datos relacional de un concesionario de autos en DB Fiddle para responder preguntas reales de negocio.</p>
+    <div class="meta"><span><strong>Herramienta:</strong> DB Fiddle</span><span><strong>Base:</strong> car_dealership_schema.sql</span><span><strong>Entrega:</strong> 18 consultas + capturas</span></div>
+  </header>
+  <section><h2>Preparación</h2><p>Asegúrate de haber ejecutado el script completo, incluyendo la creación de tablas y la inserción de datos, en tu editor SQL de DB Fiddle.</p><p><strong>Tablas:</strong> <code>dealers</code>, <code>brands</code>, <code>models</code>, <code>employees</code>, <code>cars</code>, <code>customers</code>, <code>sales</code>.</p><div class="callout warning"><strong>Nota:</strong> PostgreSQL y MySQL no soportan <code>TOP</code>. Utiliza <code>LIMIT n</code> en los ejercicios donde se solicita “TOP”.</div></section>
+  <section><h2>Conceptos cubiertos</h2><p><code>SELECT</code> · <code>FROM</code> · <code>WHERE</code> · <code>ORDER BY</code> · <code>GROUP BY</code> · <code>LIMIT</code> · <code>DISTINCT</code> · <code>SUM()</code> · <code>AVG()</code> · <code>COUNT()</code> · <code>INNER JOIN</code></p></section>
+  <section><h2>Preguntas</h2><ol>
+    <li><strong>(SELECT / FROM)</strong> Muestra toda la información de los concesionarios (<code>dealers</code>).</li>
+    <li><strong>(SELECT / FROM)</strong> Muestra el modelo, la marca (<code>brand_id</code>) y la categoría de todos los modelos disponibles.</li>
+    <li><strong>(DISTINCT)</strong> ¿Cuáles son los distintos colores de autos disponibles en el inventario?</li>
+    <li><strong>(DISTINCT)</strong> ¿Cuáles son los distintos puestos (<code>role</code>) que existen entre los empleados?</li>
+    <li><strong>(WHERE)</strong> Muestra todos los autos cuyo precio sea mayor a $28,000.</li>
+    <li><strong>(WHERE)</strong> Muestra todos los autos “Available” del concesionario con <code>dealer_id = 1</code>.</li>
+    <li><strong>(WHERE + AND)</strong> Muestra empleados con rol “Manager” contratados después del 2021-01-01.</li>
+    <li><strong>(ORDER BY)</strong> Muestra todos los autos ordenados por precio de mayor a menor.</li>
+    <li><strong>(ORDER BY + LIMIT)</strong> Muestra los 10 autos más caros del inventario.</li>
+    <li><strong>(COUNT)</strong> ¿Cuántos autos hay en total en el inventario?</li>
+    <li><strong>(COUNT + WHERE)</strong> ¿Cuántos autos han sido vendidos (<code>status = 'Sold'</code>)?</li>
+    <li><strong>(SUM)</strong> ¿Cuál es el valor total de los autos disponibles?</li>
+    <li><strong>(AVG)</strong> ¿Cuál es el precio promedio de venta (<code>sale_price</code>)?</li>
+    <li><strong>(GROUP BY + COUNT)</strong> ¿Cuántos autos tiene cada concesionario?</li>
+    <li><strong>(GROUP BY + AVG)</strong> ¿Cuál es el precio promedio de los autos por modelo?</li>
+    <li><strong>(GROUP BY + SUM + ORDER BY)</strong> ¿Cuál es el monto total vendido por cada empleado? Ordena de mayor a menor.</li>
+    <li><strong>(INNER JOIN)</strong> Muestra cada auto vendido con el nombre y apellido del cliente que lo compró.</li>
+    <li><strong>(INNER JOIN + GROUP BY + COUNT)</strong> Muestra cada concesionario con la cantidad de empleados que tiene.</li>
+  </ol></section>
+  <section><h2>Entrega</h2><p>Escribe la consulta SQL para cada pregunta y adjunta una captura de pantalla del resultado obtenido en DB Fiddle. Envía un solo documento con las 18 consultas numeradas en el mismo orden que esta guía.</p></section>
+  <footer>Asignación basada en el esquema de concesionario de autos trabajado en clase.</footer>
+</main>
+</body>
+</html>

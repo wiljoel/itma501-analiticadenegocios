@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UAGM-ITMA501 · L04 · Laboratorio de dashboards</title>
+<style>
+  :root { --ink:#0A2540; --muted:#5B7A99; --bg:#F4F8FC; --card:#fff; --line:#DCE7F2; --blue:#2E6BB8; --teal:#14B8C4; --soft:#E8F1F8; --green:#ECFDF5; --amber:#FFFBEB; }
+  * { box-sizing:border-box; } body { margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif; color:var(--ink); background:var(--bg); line-height:1.6; } main { max-width:1050px; margin:0 auto; padding:42px 26px 75px; }
+  header { background:linear-gradient(145deg,#DCE9F4,#fff); border:1px solid var(--line); border-radius:18px; padding:32px; margin-bottom:22px; } .eyebrow { color:var(--teal); font-size:12px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; } h1 { margin:8px 0 10px; font-size:clamp(30px,5vw,52px); line-height:1.1; } h2 { margin:0 0 10px; font-size:27px; color:var(--blue); } h3 { margin:24px 0 7px; font-size:19px; color:var(--blue); } p { margin:8px 0 14px; } .lede { max-width:820px; color:var(--muted); font-size:17px; } .meta { display:flex; flex-wrap:wrap; gap:18px; color:var(--muted); font-size:14px; margin-top:18px; }
+  section { background:var(--card); border:1px solid var(--line); border-radius:15px; padding:24px 28px; margin:16px 0; box-shadow:0 5px 18px rgba(10,37,64,.05); } ul,ol { padding-left:23px; } li { margin:6px 0; } .callout { padding:14px 17px; margin:16px 0; border-left:4px solid var(--teal); background:var(--green); } .warning { border-left-color:#F59E0B; background:var(--amber); } code { background:var(--soft); padding:2px 5px; border-radius:5px; }
+  table { width:100%; border-collapse:collapse; margin:14px 0; font-size:14px; } th,td { text-align:left; vertical-align:top; padding:10px 12px; border-bottom:1px solid var(--line); } th { background:var(--soft); color:var(--blue); } .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:15px; } .card { border:1px solid var(--line); border-radius:11px; padding:15px; } .card h4 { margin:0 0 5px; color:var(--blue); } footer { color:var(--muted); font-size:13px; margin-top:24px; } @media (max-width:700px) { main { padding:20px 14px 50px; } section,header { padding:20px; } .grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">UAGM-ITMA501 · L04 · Laboratorio</div>
+    <h1>Construye un dashboard de Olist en Power BI</h1>
+    <p class="lede">Usarás la base de datos de Olist en Supabase que completaste en L02 para construir una página de Power BI orientada a una decisión de negocio. El objetivo no es llenar la página de gráficos: es comunicar evidencia clara y accionable.</p>
+    <div class="meta"><span><strong>Duración:</strong> 2 horas</span><span><strong>Herramienta:</strong> Power BI Desktop</span><span><strong>Fuente:</strong> Supabase / Olist</span><span><strong>Entrega:</strong> .pbix + brief</span></div>
+  </header>
+
+  <section><h2>1. Objetivos</h2><ol><li>Conectar Power BI al proyecto de Supabase creado en L02.</li><li>Elegir visuales según la pregunta y la forma de los datos.</li><li>Crear tarjetas KPI, gráficos, una matriz y un filtro.</li><li>Verificar agregaciones y explicar el nivel de detalle de cada resultado.</li><li>Traducir patrones visuales en respuestas de negocio con evidencia y limitaciones.</li></ol></section>
+
+  <section><h2>2. Pregunta y audiencia</h2><p>Construirás un dashboard para una persona gerente de operaciones o comercial que necesita identificar dónde investigar el desempeño de los pedidos.</p><div class="callout"><strong>Pregunta central:</strong> ¿Qué estados, meses o estados de pedido requieren atención y qué evidencia del dataset apoya esa conclusión?</div><p>Antes de abrir Power BI, escribe:</p><ol><li>La audiencia.</li><li>La decisión que debe apoyar el dashboard.</li><li>Los tres resultados que necesitará esa persona.</li></ol></section>
+
+  <section><h2>3. Conectar Power BI a Supabase</h2><ol><li>Abre Power BI Desktop.</li><li>Selecciona <strong>Home → Get data → PostgreSQL database</strong>.</li><li>Obtén el host, puerto, nombre de base de datos y usuario desde <strong>Supabase → Project Settings → Database</strong>. No publiques tu contraseña.</li><li>Selecciona el modo <strong>Import</strong> para este laboratorio.</li><li>En el navegador, selecciona las tablas:
+    <code>olist_customers_dataset</code>, <code>olist_orders_dataset</code>, <code>olist_order_items_dataset</code> y <code>olist_order_reviews_dataset</code>.</li><li>Selecciona <strong>Load</strong> o <strong>Transform Data</strong> para revisar tipos de datos.</li></ol>
+    <div class="callout warning"><strong>Si falla la conexión:</strong> usa el archivo <code>L02-top-customers.csv</code> como respaldo para practicar el diseño, pero documenta que no pudiste usar la conexión directa. No compartas credenciales de Supabase.</div>
+  </section>
+
+  <section><h2>4. Revisar modelo y nivel de detalle</h2><p>Antes de crear visuales, identifica qué representa una fila en cada tabla.</p><table><tr><th>Tabla</th><th>Grano aproximado</th><th>Uso en el dashboard</th></tr><tr><td><code>olist_orders_dataset</code></td><td>Una fila por pedido</td><td>Conteo de pedidos, fechas y estados</td></tr><tr><td><code>olist_order_items_dataset</code></td><td>Una fila por artículo dentro de un pedido</td><td>Precio, flete y revenue de artículos</td></tr><tr><td><code>olist_customers_dataset</code></td><td>Una fila por dirección asociada al pedido</td><td>Estado del cliente</td></tr><tr><td><code>olist_order_reviews_dataset</code></td><td>Una fila por review</td><td>Puntaje promedio</td></tr></table><p>Confirma las relaciones usando las claves disponibles. Si una medida se duplica por una relación, detente y revisa el grano antes de continuar.</p></section>
+
+  <section><h2>5. Visual 1 — Tarjetas KPI</h2><p>Crea tres tarjetas. Usa nombres completos y unidades claras.</p><ol><li><strong>Total de pedidos:</strong> cuenta distinta de <code>order_id</code>.</li><li><strong>Gross revenue:</strong> suma de <code>price</code> y, si lo defines así, documenta si incluye <code>freight_value</code>.</li><li><strong>Puntaje promedio:</strong> promedio de <code>review_score</code>.</li></ol><p>En una nota o tooltip, documenta el período y la definición de cada medida. Si el archivo no contiene una meta oficial, no inventes una: puedes usar una meta ilustrativa claramente rotulada.</p></section>
+
+  <section><h2>6. Visual 2 — Comparación por estado</h2><ol><li>Inserta un gráfico de barras.</li><li>Usa el estado del cliente como categoría.</li><li>Usa revenue como valor.</li><li>Ordena de mayor a menor.</li><li>Titula el visual <strong>Revenue por estado del cliente</strong> e incluye la unidad monetaria.</li><li>Verifica al menos una cifra con una consulta SQL de L02 o con una tabla temporal en Power BI.</li></ol><div class="callout"><strong>Interpretación:</strong> una diferencia de revenue describe el dataset analizado. No demuestra por sí sola que un estado sea más rentable en el futuro.</div></section>
+
+  <section><h2>7. Visual 3 — Tendencia mensual</h2><ol><li>Inserta un gráfico de líneas.</li><li>Usa <code>order_purchase_timestamp</code> en el eje temporal.</li><li>Agrega por mes y muestra conteo de pedidos o revenue.</li><li>Revisa que los meses estén ordenados cronológicamente.</li><li>Describe la dirección general: estable, creciente, decreciente, estacional o irregular.</li></ol><p>Si Power BI crea una jerarquía automática que no funciona, usa una columna de fecha o una tabla calendario. Documenta cualquier transformación.</p></section>
+
+  <section><h2>8. Visual 4 — Matriz de estado de pedido</h2><ol><li>Inserta una matriz.</li><li>Coloca el estado del cliente en las filas.</li><li>Coloca <code>order_status</code> en las columnas.</li><li>Usa conteo distinto de pedidos como valores.</li><li>Activa totales si ayudan a comparar.</li></ol><p>Utiliza esta matriz para responder: ¿qué estados concentran pedidos cancelados, entregados o en proceso?</p></section>
+
+  <section><h2>9. Filtro e interacción</h2><ol><li>Agrega un slicer para estado del cliente o <code>order_status</code>.</li><li>Selecciona un estado y observa qué tarjetas y gráficos cambian.</li><li>Haz clic en una barra y revisa el cross-filtering.</li><li>Corrige interacciones que confundan o no aporten a la pregunta.</li><li>Limita el número de filtros visibles; cada control debe responder una pregunta de seguimiento.</li></ol></section>
+
+  <section><h2>10. Diseño y revisión</h2><p>Organiza la página en esta jerarquía:</p><ol><li>Título, audiencia y período.</li><li>Tarjetas KPI.</li><li>Gráfico principal de comparación o tendencia.</li><li>Matriz o detalle diagnóstico.</li><li>Slicer y nota metodológica.</li></ol><p>Revisa alineación, tamaño de letra, formato de números, contraste, títulos explícitos y uso consistente del color. Elimina visuales decorativos o repetidos.</p></section>
+
+  <section><h2>11. Convertir visuales en respuestas</h2><p>Contesta usando tu dashboard:</p><ol><li>¿Cuáles son los tres estados con mayor revenue?</li><li>Para el estado seleccionado, ¿qué estados de pedido predominan?</li><li>¿La tendencia mensual muestra estabilidad, crecimiento, descenso o estacionalidad?</li><li>¿Qué pregunta adicional debes responder antes de recomendar una acción?</li></ol><div class="callout"><strong>Formato:</strong> <em>Evidencia</em> — qué muestra el visual; <em>Interpretación</em> — qué podría significar; <em>Acción</em> — qué investigar o hacer; <em>Limitación</em> — qué no demuestra el dashboard.</div></section>
+
+  <section><h2>12. Entrega</h2><p>Entrega los siguientes archivos:</p><ol><li><code>L04-olist-dashboard-&lt;apellido&gt;.pbix</code>.</li><li>Un brief de una página en PDF o documento de texto.</li></ol><p>El brief debe incluir:</p><ul><li>Audiencia y decisión.</li><li>Tres hallazgos con evidencia numérica o visual.</li><li>Una recomendación o próximo paso.</li><li>Una limitación del dataset, del modelo o de la interpretación.</li><li>Definición de las tres tarjetas KPI.</li></ul><div class="callout warning"><strong>No concluyas causalidad.</strong> “El estado X tiene mayor revenue en este dataset” es una descripción. “El estado X causa mayor revenue” no está justificado por este dashboard.</div></section>
+
+  <footer>Fuente principal: tablas Olist cargadas en Supabase durante L02. Usa <code>L02-top-customers.csv</code> solamente como respaldo si la conexión directa no funciona.</footer>
+</main>
+</body>
+</html>
